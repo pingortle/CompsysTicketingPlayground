@@ -36,7 +36,7 @@ CREATE TABLE TicketStatus (
 );
 CREATE TABLE TicketStatusEvent (
 	ticket_id int NOT NULL,
-	time timestamp,
+	time datetime,
 	employee_id int NOT NULL,
 	status_id int NOT NULL,
 	FOREIGN KEY(ticket_id) REFERENCES Ticket (id),
