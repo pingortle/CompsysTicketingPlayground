@@ -76,13 +76,13 @@ CREATE TABLE Labor (
 );
 CREATE TABLE LaborRate (
 	labor_id int PRIMARY KEY,
-	rate smallmoney,
+	rate smallmoney NOT NULL,
 	FOREIGN KEY(labor_id) REFERENCES Labor (id)
 );
 CREATE TABLE CustomerLaborRate (
-	customer_id int,
-	labor_id int,
-	rate smallmoney,
+	customer_id int NOT NULL,
+	labor_id int NOT NULL,
+	rate smallmoney NOT NULL,
 	FOREIGN KEY(customer_id) REFERENCES Customer (id),
 	FOREIGN KEY(labor_id) REFERENCES Labor (id),
 	CONSTRAINT pk_customerlaborrate PRIMARY KEY (customer_id, labor_id)
