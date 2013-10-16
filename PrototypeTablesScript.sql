@@ -87,3 +87,9 @@ CREATE TABLE CustomerLaborRate (
 	FOREIGN KEY(labor_id) REFERENCES Labor (id),
 	CONSTRAINT pk_customerlaborrate PRIMARY KEY (customer_id, labor_id)
 );
+CREATE TABLE TicketInvoice (
+	ticket_id int NOT NULL PRIMARY KEY,
+	time datetime NOT NULL,
+	note text,
+	FOREIGN KEY(ticket_id) REFERENCES Ticket (id)
+);
