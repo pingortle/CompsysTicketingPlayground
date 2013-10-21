@@ -66,7 +66,7 @@ CREATE TABLE TicketNote (
 CREATE TABLE TicketType (
 	ticket_id int NOT NULL PRIMARY KEY,
 	labor_id int NOT NULL,
-	FOREIGN KEY(ticket_id) REFERENCES Ticket (id)
+	FOREIGN KEY(ticket_id) REFERENCES Ticket (id),
 	FOREIGN KEY(labor_id) REFERENCES Labor (id)
 );
 CREATE TABLE Labor (
