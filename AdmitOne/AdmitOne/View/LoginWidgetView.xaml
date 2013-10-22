@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AdmitOne"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -28,7 +29,7 @@
                                         <Storyboard>
                                             <DoubleAnimation
                                             Storyboard.TargetName="fadeout"
-                                            Storyboard.TargetProperty="(Grid.Opacity)"
+                                            Storyboard.TargetProperty="(Control.Opacity)"
                                             From="0" To="100" Duration="00:00:50" AutoReverse="False"/>
                                         </Storyboard>
                                     </BeginStoryboard>
@@ -38,7 +39,7 @@
                                         <Storyboard>
                                             <DoubleAnimation
                                             Storyboard.TargetName="fadeout"
-                                            Storyboard.TargetProperty="(Grid.Opacity)"
+                                            Storyboard.TargetProperty="(Control.Opacity)"
                                             From="100" To="0" Duration="00:00:50" AutoReverse="False"/>
                                         </Storyboard>
                                     </BeginStoryboard>
@@ -46,25 +47,19 @@
                             </DataTrigger>
                         </ControlTemplate.Triggers>
 
-                        <Grid x:Name="fadeout"  MinWidth="200">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Grid.Row="0" Grid.Column="0" Padding="2" HorizontalAlignment="Right">Username:</TextBlock>
-                            <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" />
-                            <TextBlock Grid.Row="1" Grid.Column="0" Padding="2" HorizontalAlignment="Right">Password:</TextBlock>
-                            <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" />
-                            <Button Grid.Row="2" Grid.ColumnSpan="2"  HorizontalAlignment="Center">Login</Button>
-
-                        </Grid>
+                        <StackPanel x:Name="fadeout"
+                                    local:MarginSetter.Margin="2"
+                                    Grid.IsSharedSizeScope="True">
+                            <local:SharedRow local:MarginSetter.Margin="2">
+                                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0">Username:</TextBlock>
+                                <TextBox Grid.Column="1" MinWidth="100" />
+                            </local:SharedRow>
+                            <local:SharedRow local:MarginSetter.Margin="2">
+                                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0">Password:</TextBlock>
+                                <TextBox Grid.Column="1" MinWidth="100" />
+                            </local:SharedRow>
+                            <Button HorizontalAlignment="Center">Login</Button>
+                        </StackPanel>
                     </ControlTemplate>
                 </Control.Template>
             </Control>

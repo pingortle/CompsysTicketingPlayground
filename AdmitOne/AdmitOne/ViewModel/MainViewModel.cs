@@ -11,7 +11,11 @@ namespace AdmitOne.ViewModel
         public MainViewModel(IScreen screen)
         {
             HostScreen = screen;
+
+            NavigateToCreateTickets = screen.Router.NavigateCommandFor<CreateTicketsViewModel>();
         }
+
+        public IReactiveCommand NavigateToCreateTickets { get; private set; }
 
         public IScreen HostScreen { get; private set; }
 

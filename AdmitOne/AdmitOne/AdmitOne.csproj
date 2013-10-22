@@ -112,6 +112,11 @@
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="LoginManager.cs" />
+    <Compile Include="ViewModel\CreateTicketsViewModel.cs" />
+    <Compile Include="ViewModel\DefaultScreen.cs" />
+    <Compile Include="View\CreateTicketsView.xaml.cs">
+      <DependentUpon>CreateTicketsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LoginWidgetView.xaml.cs">
       <DependentUpon>LoginWidgetView.xaml</DependentUpon>
     </Compile>
