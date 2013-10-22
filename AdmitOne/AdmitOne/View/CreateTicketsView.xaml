@@ -3,16 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AdmitOne.View"
              xmlns:rxui="clr-namespace:ReactiveUI.Xaml;assembly=ReactiveUI.Xaml"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{Binding RelativeSource={RelativeSource Self}, Path=ViewModel}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
     <Grid>
         <DockPanel>
             <StackPanel DockPanel.Dock="Bottom">
                 <TextBlock>Ticket:</TextBlock>
                 <TextBox Text="{Binding TicketText, UpdateSourceTrigger=PropertyChanged}" />
-                <Button HorizontalAlignment="Center" IsDefault="True" Command="{Binding AddTicket}">Add</Button>
+                <StackPanel HorizontalAlignment="Center"
+                            Orientation="Horizontal"
+                            local:MarginSetter.Margin="4">
+                    <Button IsDefault="True" Command="{Binding AddTicket}">Add</Button>
+                    <Button Command="{Binding SaveChanges}">
+                        <StackPanel Orientation="Horizontal" local:MarginSetter.Margin="4">
+                            <TextBlock>Save Changes</TextBlock>
+                            <ProgressBar Width="30" IsIndeterminate="True" Visibility="{Binding IsExecuting, Converter={StaticResource BoolToVis}}" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
             </StackPanel>
             <Button DockPanel.Dock="Top" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="2" Command="{Binding GoBack}">Back</Button>
             <ListView ItemsSource="{Binding CurrentBatch}">

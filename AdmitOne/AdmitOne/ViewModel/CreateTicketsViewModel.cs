@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
@@ -9,6 +9,9 @@ namespace AdmitOne.ViewModel
 {
     public class CreateTicketsViewModel : ReactiveObject, IRoutableViewModel
     {
+#warning Demonstration purposes only!
+        static Random _randomThisShouldNotBeHere = new Random(0);
+
         public CreateTicketsViewModel(IScreen screen = null)
         {
             HostScreen = screen ?? new DefaultScreen(RxApp.DependencyResolver);
@@ -27,9 +30,35 @@ namespace AdmitOne.ViewModel
                     CurrentBatch.Add(new TicketItemViewModel(TicketText, CurrentBatch.Remove));
                     TicketText = default(string);
                 });
+
+            var anyInList = CurrentBatch.Changed.Select(_ => CurrentBatch.Any());
+
+            SaveChanges = new ReactiveCommand(anyInList.StartWith(false));
+
+            _isExecuting = SaveChanges.IsExecuting.ToProperty(this, x => x.IsExecuting, false);
+
+            SaveChanges.RegisterAsyncFunction(x =>
+            {
+#warning Demonstration purposes only!
+                // Do some work which may or may not fail.
+                System.Threading.Thread.Sleep(3000);
+
+                // Return the success status of the work.
+                return _randomThisShouldNotBeHere.Next(0, 2) == 1;
+            })
+            .Subscribe(x =>
+                    {
+                        if (x)
+                            (CurrentBatch as IList).Clear();
+                    });
         }
 
+        private ObservableAsPropertyHelper<bool> _isExecuting;
+        public bool IsExecuting { get { return _isExecuting.Value; } }
+
         public IReactiveCommand AddTicket { get; private set; }
+
+        public IReactiveCommand SaveChanges { get; private set; }
 
         private string _ticketText;
         public string TicketText
