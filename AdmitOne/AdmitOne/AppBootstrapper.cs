@@ -1,4 +1,5 @@
-﻿using AdmitOne.ViewModel;
+﻿using AdmitOne.View;
+using AdmitOne.ViewModel;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace AdmitOne
             //  Singletons
             dr.RegisterConstant(this, typeof(IScreen));
             dr.RegisterLazySingleton(() => new LoginManager(), typeof(ILogPeopleIn));
-            // New'd up
+            // Views
             dr.Register(() => new MainView(), typeof(IViewFor<MainViewModel>));
             dr.Register(() => new LoginWidgetView(), typeof(IViewFor<LoginWidgetViewModel>));
         }

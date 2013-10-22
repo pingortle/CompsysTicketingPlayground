@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace AdmitOne
+namespace AdmitOne.View
 {
     public class MarginSetter
     {

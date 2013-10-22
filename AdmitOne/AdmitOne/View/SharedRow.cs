@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 
-namespace AdmitOne
+namespace AdmitOne.View
 {
     // Based on: https://gist.github.com/bradphelan/6449957
     [ContentProperty("Children")]

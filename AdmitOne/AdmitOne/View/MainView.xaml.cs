@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AdmitOne
+namespace AdmitOne.View
 {
     /// <summary>
     /// Interaction logic for MainView.xaml
