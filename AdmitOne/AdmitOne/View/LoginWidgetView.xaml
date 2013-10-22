@@ -48,7 +48,7 @@
 
                         <Grid x:Name="fadeout"  MinWidth="200">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
@@ -58,9 +58,9 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" Grid.Column="0" Padding="2">Username:</TextBlock>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Padding="2" HorizontalAlignment="Right">Username:</TextBlock>
                             <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" />
-                            <TextBlock Grid.Row="1" Grid.Column="0" Padding="2">Password:</TextBlock>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Padding="2" HorizontalAlignment="Right">Password:</TextBlock>
                             <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" />
                             <Button Grid.Row="2" Grid.ColumnSpan="2"  HorizontalAlignment="Center">Login</Button>
 

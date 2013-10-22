@@ -2,14 +2,18 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:rxui="clr-namespace:ReactiveUI.Xaml;assembly=ReactiveUI.Xaml"
-        Title="MainWindow" MinHeight="480" MinWidth="620">
+        Title="MainWindow" MinHeight="480" MinWidth="620" TextElement.FontSize="{Binding ElementName=slider, Path=Value}">
 
     <Grid Margin="4">
         <DockPanel>
             <rxui:RoutedViewHost Router="{Binding Source={StaticResource bootstrapper}, Path=Router}" />
         </DockPanel>
+        <StackPanel Orientation="Horizontal" Margin="2">
+            <Slider DockPanel.Dock="Right" Orientation="Vertical" TickPlacement="TopLeft" Minimum="12" Maximum="32" x:Name="slider" />
+        </StackPanel>
         <rxui:ViewModelViewHost HorizontalContentAlignment="Right"
                                 VerticalContentAlignment="Top"
+                                Margin="4"
                                 ViewModel="{Binding Source={StaticResource bootstrapper}, Path=LoginWidgetViewModel}">
             <rxui:ViewModelViewHost.DefaultContent>
                 <Button>Uh, oh...</Button>

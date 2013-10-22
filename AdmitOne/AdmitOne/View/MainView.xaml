@@ -22,12 +22,12 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <WrapPanel Grid.Row="1" Grid.Column="1">
-                <Button Width="100" Height="100">Dispatch</Button>
-                <Button Width="100" Height="100">Random</Button>
-                <Button Width="100" Height="100">Stuff</Button>
-                <Button Width="100" Height="100">On Call</Button>
-                <Button Width="100" Height="100">Stats</Button>
-                <Button Width="100" Height="100">Settings</Button>
+                <Button MinWidth="100" Height="100">Dispatch</Button>
+                <Button MinWidth="100" Height="100">Random</Button>
+                <Button MinWidth="100" Height="100">Stuff</Button>
+                <Button MinWidth="100" Height="100">On Call</Button>
+                <Button MinWidth="100" Height="100">Stats</Button>
+                <Button MinWidth="100" Height="100">Settings</Button>
             </WrapPanel>
         </Grid>
     </Grid>
