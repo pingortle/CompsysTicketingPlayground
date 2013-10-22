@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AdmitOne
+namespace AdmitOne.ViewModel
 {
     public sealed class LoginWidgetViewModel : ReactiveObject
     {

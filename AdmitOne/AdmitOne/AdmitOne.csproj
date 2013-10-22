@@ -84,11 +84,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="LoginWidgetView.xaml">
+    <Page Include="View\LoginWidgetView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainView.xaml">
+    <Page Include="View\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -99,14 +99,14 @@
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="LoginManager.cs" />
-    <Compile Include="LoginWidgetView.xaml.cs">
+    <Compile Include="View\LoginWidgetView.xaml.cs">
       <DependentUpon>LoginWidgetView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LoginWidgetViewModel.cs" />
-    <Compile Include="MainView.xaml.cs">
+    <Compile Include="ViewModel\LoginWidgetViewModel.cs" />
+    <Compile Include="View\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
