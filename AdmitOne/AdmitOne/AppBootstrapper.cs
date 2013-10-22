@@ -43,6 +43,9 @@ namespace AdmitOne
             // Views
             dr.Register(() => new MainView(), typeof(IViewFor<MainViewModel>));
             dr.Register(() => new LoginWidgetView(), typeof(IViewFor<LoginWidgetViewModel>));
+            dr.Register(() => new CreateTicketsView(), typeof(IViewFor<CreateTicketsViewModel>));
+            //ViewModels
+            dr.Register(() => new CreateTicketsViewModel(dr.GetService<IScreen>()), typeof(CreateTicketsViewModel));
         }
         #endregion
     }

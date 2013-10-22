@@ -11,7 +11,11 @@ namespace AdmitOne.ViewModel
         public CreateTicketsViewModel(IScreen screen = null)
         {
             HostScreen = screen ?? new DefaultScreen(RxApp.DependencyResolver);
+
+            GoBack = HostScreen.Router.NavigateBack;
         }
+
+        public IReactiveCommand GoBack { get; private set; }
 
         public IScreen HostScreen { get; private set; }
 

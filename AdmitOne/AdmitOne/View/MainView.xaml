@@ -25,7 +25,7 @@
                 <Button MinWidth="100" Height="100">Dispatch</Button>
                 <Button MinWidth="100" Height="100">Random</Button>
                 <Button MinWidth="100" Height="100">Stuff</Button>
-                <Button MinWidth="100" Height="100">On Call</Button>
+                <Button MinWidth="100" Height="100" Command="{Binding NavigateToCreateTickets}">On Call</Button>
                 <Button MinWidth="100" Height="100">Stats</Button>
                 <Button MinWidth="100" Height="100">Settings</Button>
             </WrapPanel>
