@@ -91,6 +91,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\TicketItemViewModel.cs" />
     <Compile Include="View\MarginSetter.cs" />
     <Compile Include="View\SharedRow.cs" />
     <Page Include="View\CreateTicketsView.xaml">

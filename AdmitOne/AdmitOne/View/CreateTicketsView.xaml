@@ -3,10 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:rxui="clr-namespace:ReactiveUI.Xaml;assembly=ReactiveUI.Xaml"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{Binding RelativeSource={RelativeSource Self}, Path=ViewModel}">
     <Grid>
-        <Button Command="{Binding GoBack}">Back</Button>
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Bottom">
+                <TextBlock>Ticket:</TextBlock>
+                <TextBox Text="{Binding TicketText, UpdateSourceTrigger=PropertyChanged}" />
+                <Button HorizontalAlignment="Center" IsDefault="True" Command="{Binding AddTicket}">Add</Button>
+            </StackPanel>
+            <Button DockPanel.Dock="Top" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="2" Command="{Binding GoBack}">Back</Button>
+            <ListView ItemsSource="{Binding CurrentBatch}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Command="{Binding RemoveItem}" CommandParameter="{Binding}">X</Button>
+                            <TextBlock Margin="2" Text="{Binding Text}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </DockPanel>
     </Grid>
 </UserControl>
