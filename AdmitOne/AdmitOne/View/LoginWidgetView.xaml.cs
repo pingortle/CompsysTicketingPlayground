@@ -26,31 +26,21 @@ namespace AdmitOne.View
         {
             InitializeComponent();
         }
-
+        
+        #region IViewFor Boilerplate
         private static DependencyProperty ViewModelProperty =
             DependencyProperty.Register("ViewModel", typeof(LoginWidgetViewModel), typeof(LoginWidgetView), new PropertyMetadata(null));
         public LoginWidgetViewModel ViewModel
         {
-            get
-            {
-                return (LoginWidgetViewModel)GetValue(ViewModelProperty);
-            }
-            set
-            {
-                SetValue(ViewModelProperty, value);
-            }
+            get { return (LoginWidgetViewModel)GetValue(ViewModelProperty); }
+            set { SetValue(ViewModelProperty, value); }
         }
 
         object IViewFor.ViewModel
         {
-            get
-            {
-                return ViewModel;
-            }
-            set
-            {
-                ViewModel = (LoginWidgetViewModel)value;
-            }
+            get { return ViewModel; }
+            set { ViewModel = (LoginWidgetViewModel)value; }
         }
+        #endregion
     }
 }

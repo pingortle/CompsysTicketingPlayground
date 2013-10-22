@@ -27,7 +27,8 @@ namespace AdmitOne.View
             InitializeComponent();
         }
 
-        private DependencyProperty ViewModelProperty =
+        #region IViewFor Boilerplate
+        private static DependencyProperty ViewModelProperty =
             DependencyProperty.Register("ViewModel", typeof(MainViewModel), typeof(MainView), new PropertyMetadata(null));
         public MainViewModel ViewModel
         {
@@ -38,7 +39,8 @@ namespace AdmitOne.View
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (MainViewModel)value;}
+            set { ViewModel = (MainViewModel)value; }
         }
+        #endregion
     }
 }
