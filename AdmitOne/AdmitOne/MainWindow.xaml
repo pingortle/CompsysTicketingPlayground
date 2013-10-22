@@ -6,11 +6,9 @@
 
     <Grid Margin="4">
         <DockPanel>
+            <Slider DockPanel.Dock="Left" Orientation="Vertical" TickPlacement="TopLeft" Minimum="12" Maximum="32" x:Name="slider" />
             <rxui:RoutedViewHost Router="{Binding Source={StaticResource bootstrapper}, Path=Router}" />
         </DockPanel>
-        <StackPanel Orientation="Horizontal" Margin="2">
-            <Slider DockPanel.Dock="Right" Orientation="Vertical" TickPlacement="TopLeft" Minimum="12" Maximum="32" x:Name="slider" />
-        </StackPanel>
         <rxui:ViewModelViewHost HorizontalContentAlignment="Right"
                                 VerticalContentAlignment="Top"
                                 Margin="4"
