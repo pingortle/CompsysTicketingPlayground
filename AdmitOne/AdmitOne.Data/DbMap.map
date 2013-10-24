@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database
+  xmlns="http://schemas.microsoft.com/linqtosql/mapping/2007"
+  Name="CompsysTicketSystem">
+  <Table Name="Customers">
+    <Type Name="Customer">
+      <Column Name="ID" Member="CustomerID" IsIdentity="True" />
+      <Column Name="CompanyName" Member="CompanyName"/>
+      <Column Name="ContactName" Member="ContactName"/>
+      <Column Name="ContactTitle" Member="ContactTitle"/>
+      <Column Name="Address" Member="Address"/>
+      <Column Name="City" Member="City"/>
+      <Column Name="Region" Member="Region"/>
+      <Column Name="PostalCode" Member="PostalCode" />
+      <Column Name="Country" Member="Country"/>
+      <Column Name="Phone" Member="Phone"/>
+      <Column Name="Fax" Member="Fax"/>
+      <Association Name="FK_Tickets_Customers" Member="Tickets" Storage="_Tickets" ThisKey="CustomerID" OtherTable="Tickets" OtherKey="CustomerID" />
+    </Type>
+  </Table>
+</Database>

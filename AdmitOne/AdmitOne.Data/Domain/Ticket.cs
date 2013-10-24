@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace AdmitOne.Data
+namespace AdmitOne.Data.Domain
 {
-    public class Repository
+    public sealed class Ticket
     {
     }
 }
