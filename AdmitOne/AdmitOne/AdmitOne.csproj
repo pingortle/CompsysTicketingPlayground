@@ -92,11 +92,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModel\DispatchViewModel.cs" />
+    <Compile Include="ViewModel\MyTicketsViewModel.cs" />
     <Compile Include="ViewModel\TicketItemViewModel.cs" />
     <Compile Include="View\DispatchView.xaml.cs">
       <DependentUpon>DispatchView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MarginSetter.cs" />
+    <Compile Include="View\MyTicketsView.xaml.cs">
+      <DependentUpon>MyTicketsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SharedRow.cs" />
     <Page Include="View\CreateTicketsView.xaml">
       <SubType>Designer</SubType>
@@ -134,6 +138,10 @@
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Page Include="View\MyTicketsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
