@@ -22,7 +22,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <WrapPanel Grid.Row="1" Grid.Column="1">
-                <Button MinWidth="100" Height="100">Dispatch</Button>
+                <Button MinWidth="100" Height="100" Command="{Binding NavigateToDispatch}">Dispatch</Button>
                 <Button MinWidth="100" Height="100">Random</Button>
                 <Button MinWidth="100" Height="100">Stuff</Button>
                 <Button MinWidth="100" Height="100" Command="{Binding NavigateToCreateTickets}">On Call</Button>

@@ -91,10 +91,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\DispatchViewModel.cs" />
     <Compile Include="ViewModel\TicketItemViewModel.cs" />
+    <Compile Include="View\DispatchView.xaml.cs">
+      <DependentUpon>DispatchView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MarginSetter.cs" />
     <Compile Include="View\SharedRow.cs" />
     <Page Include="View\CreateTicketsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DispatchView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
