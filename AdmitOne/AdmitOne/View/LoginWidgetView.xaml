@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AdmitOne.View"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </UserControl.Resources>
@@ -52,13 +53,14 @@
                                     Grid.IsSharedSizeScope="True">
                             <local:SharedRow local:MarginSetter.Margin="2">
                                 <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0">Username:</TextBlock>
-                                <TextBox Grid.Column="1" MinWidth="100" />
+                                <TextBox Grid.Column="1" MinWidth="100" Text="{Binding Username}" IsEnabled="{Binding IsEnabled}" />
                             </local:SharedRow>
                             <local:SharedRow local:MarginSetter.Margin="2">
                                 <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0">Password:</TextBlock>
-                                <TextBox Grid.Column="1" MinWidth="100" />
+                                <TextBox Grid.Column="1" MinWidth="100" Text="{Binding Password}" IsEnabled="{Binding IsEnabled}" />
                             </local:SharedRow>
-                            <Button HorizontalAlignment="Center">Login</Button>
+                            <Button HorizontalAlignment="Center" Command="{Binding Login}">Login</Button>
+                            <TextBlock Text="{Binding Status}" />
                         </StackPanel>
                     </ControlTemplate>
                 </Control.Template>
