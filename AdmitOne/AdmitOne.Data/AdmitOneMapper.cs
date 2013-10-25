@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AdmitOne.Data
 {
-    public static class Mapping
+    public static class AdmitOneMapper
     {
         public static XmlMappingSource GetMapping()
         {

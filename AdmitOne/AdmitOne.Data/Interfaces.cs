@@ -19,4 +19,9 @@ namespace AdmitOne.Data
         ITable<T> Items { get; }
         void SaveChanges();
     }
+
+    public interface IRepository<T> : IUnitOfWork<T>
+    {
+        IEnumerable<T> FindAll();
+    }
 }
