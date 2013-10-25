@@ -15,10 +15,10 @@ namespace AdmitOne.Data.Domain
             Customers = context.GetTable<Customer>();
         }
 
-        public Customer FindCustomer(string id)
+        public Customer FindCustomer(int id)
         {
             return (from c in Customers
-                    where c.ID == id
+                    where c.Id == id
                     select c).SingleOrDefault<Customer>();
         }
 

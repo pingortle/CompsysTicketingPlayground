@@ -16,14 +16,7 @@ namespace AdmitOne.Data.Driver
             {
                 new Customer
                 {
-                    ID = "123",
-                    CompanyName = "Chicken Farmers Inc.",
-                    ContactTitle = "Sales Rep",
-                    ContactName = "Jose",
-                    Address = "123 Watson Ave.",
-                    City = "Clawford",
-                    PostalCode = "89354",
-                    Country = "USA",
+                    Id = 123,
                     Phone = "8921234567",
                     Fax = "7891234567",
                 }
@@ -37,7 +30,7 @@ namespace AdmitOne.Data.Driver
 
             InitializeTestData(r);
 
-            Customer c = r.FindCustomer("123");
+            Customer c = r.FindCustomer(123);
 
             Debug.Assert(c != null);
         }

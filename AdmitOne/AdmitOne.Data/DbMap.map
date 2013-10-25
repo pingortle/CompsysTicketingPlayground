@@ -1,21 +1,129 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Database
-  xmlns="http://schemas.microsoft.com/linqtosql/mapping/2007"
-  Name="CompsysTicketSystem">
-  <Table Name="Customers">
-    <Type Name="Customer">
-      <Column Name="ID" Member="CustomerID" IsIdentity="True" />
-      <Column Name="CompanyName" Member="CompanyName"/>
-      <Column Name="ContactName" Member="ContactName"/>
-      <Column Name="ContactTitle" Member="ContactTitle"/>
-      <Column Name="Address" Member="Address"/>
-      <Column Name="City" Member="City"/>
-      <Column Name="Region" Member="Region"/>
-      <Column Name="PostalCode" Member="PostalCode" />
-      <Column Name="Country" Member="Country"/>
-      <Column Name="Phone" Member="Phone"/>
-      <Column Name="Fax" Member="Fax"/>
-      <Association Name="FK_Tickets_Customers" Member="Tickets" Storage="_Tickets" ThisKey="CustomerID" OtherTable="Tickets" OtherKey="CustomerID" />
+<Database Name="CompsysTicketTest" xmlns="http://schemas.microsoft.com/linqtosql/mapping/2007">
+  <Table Name="dbo.ContractType" Member="ContractType">
+    <Type Name="Data.Dto.ContractType">
+      <Column Name="id" Member="Id" Storage="_Id" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" AutoSync="OnInsert" />
+      <Column Name="type" Member="Type" Storage="_Type" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="description" Member="Description" Storage="_Description" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="FK__CustomerC__type___2C3393D0" Member="CustomerContract" Storage="_CustomerContract" ThisKey="Id" OtherKey="Type_id" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Customer" Member="Customer">
+    <Type Name="Data.Dto.Customer">
+      <Column Name="id" Member="Id" Storage="_Id" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" AutoSync="OnInsert" />
+      <Column Name="name" Member="Name" Storage="_Name" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="phone" Member="Phone" Storage="_Phone" DbType="VarChar(32) NOT NULL" CanBeNull="false" />
+      <Column Name="fax" Member="Fax" Storage="_Fax" DbType="VarChar(32)" />
+      <Association Name="FK__CustomerC__custo__2B3F6F97" Member="CustomerContract" Storage="_CustomerContract" ThisKey="Id" OtherKey="Customer_id" DeleteRule="NO ACTION" />
+      <Association Name="FK__CustomerL__custo__3C69FB99" Member="CustomerLaborRate" Storage="_CustomerLaborRate" ThisKey="Id" OtherKey="Customer_id" DeleteRule="NO ACTION" />
+      <Association Name="FK__Ticket__customer__1A14E395" Member="Ticket" Storage="_Ticket" ThisKey="Id" OtherKey="Customer_id" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CustomerContract" Member="CustomerContract">
+    <Type Name="Data.Dto.CustomerContract">
+      <Column Name="id" Member="Id" Storage="_Id" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" AutoSync="OnInsert" />
+      <Column Name="rate" Member="Rate" Storage="_Rate" DbType="SmallMoney NOT NULL" />
+      <Column Name="customer_id" Member="Customer_id" Storage="_Customer_id" DbType="Int NOT NULL" />
+      <Column Name="type_id" Member="Type_id" Storage="_Type_id" DbType="Int NOT NULL" />
+      <Association Name="FK__CustomerC__custo__2B3F6F97" Member="Customer" Storage="_Customer" ThisKey="Customer_id" OtherKey="Id" IsForeignKey="true" />
+      <Association Name="FK__CustomerC__type___2C3393D0" Member="ContractType" Storage="_ContractType" ThisKey="Type_id" OtherKey="Id" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CustomerLaborRate" Member="CustomerLaborRate">
+    <Type Name="Data.Dto.CustomerLaborRate">
+      <Column Name="customer_id" Member="Customer_id" Storage="_Customer_id" DbType="Int NOT NULL" IsPrimaryKey="true" />
+      <Column Name="labor_id" Member="Labor_id" Storage="_Labor_id" DbType="Int NOT NULL" IsPrimaryKey="true" />
+      <Column Name="rate" Member="Rate" Storage="_Rate" DbType="SmallMoney" />
+      <Association Name="FK__CustomerL__custo__3C69FB99" Member="Customer" Storage="_Customer" ThisKey="Customer_id" OtherKey="Id" IsForeignKey="true" />
+      <Association Name="FK__CustomerL__labor__3D5E1FD2" Member="Labor" Storage="_Labor" ThisKey="Labor_id" OtherKey="Id" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Employee" Member="Employee">
+    <Type Name="Data.Dto.Employee">
+      <Column Name="id" Member="Id" Storage="_Id" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" AutoSync="OnInsert" />
+      <Column Name="email" Member="Email" Storage="_Email" DbType="VarChar(64) NOT NULL" CanBeNull="false" />
+      <Column Name="f_name" Member="F_name" Storage="_F_name" DbType="VarChar(64) NOT NULL" CanBeNull="false" />
+      <Column Name="l_name" Member="L_name" Storage="_L_name" DbType="VarChar(64) NOT NULL" CanBeNull="false" />
+      <Association Name="FK__EmployeeR__emplo__108B795B" Member="EmployeeRole" Storage="_EmployeeRole" ThisKey="Id" OtherKey="Employee_id" DeleteRule="NO ACTION" />
+      <Association Name="FK__TicketSta__emplo__46E78A0C" Member="TicketStatusEvent" Storage="_TicketStatusEvent" ThisKey="Id" OtherKey="Employee_id" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EmployeeRole" Member="EmployeeRole">
+    <Type Name="Data.Dto.EmployeeRole">
+      <Column Name="employee_id" Member="Employee_id" Storage="_Employee_id" DbType="Int NOT NULL" IsPrimaryKey="true" />
+      <Column Name="role_id" Member="Role_id" Storage="_Role_id" DbType="Int NOT NULL" IsPrimaryKey="true" />
+      <Association Name="FK__EmployeeR__emplo__108B795B" Member="Employee" Storage="_Employee" ThisKey="Employee_id" OtherKey="Id" IsForeignKey="true" />
+      <Association Name="FK__EmployeeR__role___117F9D94" Member="Role" Storage="_Role" ThisKey="Role_id" OtherKey="Id" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Labor" Member="Labor">
+    <Type Name="Data.Dto.Labor">
+      <Column Name="id" Member="Id" Storage="_Id" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" AutoSync="OnInsert" />
+      <Column Name="labor" Member="Labor1" Storage="_Labor1" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="description" Member="Description" Storage="_Description" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="FK__CustomerL__labor__3D5E1FD2" Member="CustomerLaborRate" Storage="_CustomerLaborRate" ThisKey="Id" OtherKey="Labor_id" DeleteRule="NO ACTION" />
+      <Association Name="FK__LaborRate__labor__398D8EEE" Member="LaborRate" Storage="_LaborRate" ThisKey="Id" OtherKey="Labor_id" DeleteRule="NO ACTION" IsUnique="true" />
+      <Association Name="FK__TicketTyp__labor__4316F928" Member="TicketType" Storage="_TicketType" ThisKey="Id" OtherKey="Labor_id" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LaborRate" Member="LaborRate">
+    <Type Name="Data.Dto.LaborRate">
+      <Column Name="labor_id" Member="Labor_id" Storage="_Labor_id" DbType="Int NOT NULL" IsPrimaryKey="true" />
+      <Column Name="rate" Member="Rate" Storage="_Rate" DbType="SmallMoney" />
+      <Association Name="FK__LaborRate__labor__398D8EEE" Member="Labor" Storage="_Labor" ThisKey="Labor_id" OtherKey="Id" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Role" Member="Role">
+    <Type Name="Data.Dto.Role">
+      <Column Name="id" Member="Id" Storage="_Id" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" AutoSync="OnInsert" />
+      <Column Name="role" Member="Role1" Storage="_Role1" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Association Name="FK__EmployeeR__role___117F9D94" Member="EmployeeRole" Storage="_EmployeeRole" ThisKey="Id" OtherKey="Role_id" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Ticket" Member="Ticket">
+    <Type Name="Data.Dto.Ticket">
+      <Column Name="id" Member="Id" Storage="_Id" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" AutoSync="OnInsert" />
+      <Column Name="description" Member="Description" Storage="_Description" DbType="Text" UpdateCheck="Never" />
+      <Column Name="customer_id" Member="Customer_id" Storage="_Customer_id" DbType="Int NOT NULL" />
+      <Association Name="FK__Ticket__customer__1A14E395" Member="Customer" Storage="_Customer" ThisKey="Customer_id" OtherKey="Id" IsForeignKey="true" />
+      <Association Name="FK__TicketNot__ticke__30F848ED" Member="TicketNote" Storage="_TicketNote" ThisKey="Id" OtherKey="Ticket_id" DeleteRule="NO ACTION" />
+      <Association Name="FK__TicketSta__ticke__45F365D3" Member="TicketStatusEvent" Storage="_TicketStatusEvent" ThisKey="Id" OtherKey="Ticket_id" DeleteRule="NO ACTION" />
+      <Association Name="FK__TicketTyp__ticke__4222D4EF" Member="TicketType" Storage="_TicketType" ThisKey="Id" OtherKey="Ticket_id" DeleteRule="NO ACTION" IsUnique="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TicketNote" Member="TicketNote">
+    <Type Name="Data.Dto.TicketNote">
+      <Column Name="id" Member="Id" Storage="_Id" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" AutoSync="OnInsert" />
+      <Column Name="ticket_id" Member="Ticket_id" Storage="_Ticket_id" DbType="Int NOT NULL" />
+      <Column Name="note" Member="Note" Storage="_Note" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="FK__TicketNot__ticke__30F848ED" Member="Ticket" Storage="_Ticket" ThisKey="Ticket_id" OtherKey="Id" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TicketStatus" Member="TicketStatus">
+    <Type Name="Data.Dto.TicketStatus">
+      <Column Name="id" Member="Id" Storage="_Id" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" AutoSync="OnInsert" />
+      <Column Name="status" Member="Status" Storage="_Status" DbType="VarChar(128)" />
+      <Column Name="description" Member="Description" Storage="_Description" DbType="Text" UpdateCheck="Never" />
+      <Association Name="FK__TicketSta__statu__47DBAE45" Member="TicketStatusEvent" Storage="_TicketStatusEvent" ThisKey="Id" OtherKey="Status_id" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TicketStatusEvent" Member="TicketStatusEvent">
+    <Type Name="Data.Dto.TicketStatusEvent">
+      <Column Name="ticket_id" Member="Ticket_id" Storage="_Ticket_id" DbType="Int NOT NULL" IsPrimaryKey="true" />
+      <Column Name="time" Member="Time" Storage="_Time" DbType="DateTime NOT NULL" IsPrimaryKey="true" />
+      <Column Name="employee_id" Member="Employee_id" Storage="_Employee_id" DbType="Int NOT NULL" />
+      <Column Name="status_id" Member="Status_id" Storage="_Status_id" DbType="Int NOT NULL" />
+      <Association Name="FK__TicketSta__emplo__46E78A0C" Member="Employee" Storage="_Employee" ThisKey="Employee_id" OtherKey="Id" IsForeignKey="true" />
+      <Association Name="FK__TicketSta__statu__47DBAE45" Member="TicketStatus" Storage="_TicketStatus" ThisKey="Status_id" OtherKey="Id" IsForeignKey="true" />
+      <Association Name="FK__TicketSta__ticke__45F365D3" Member="Ticket" Storage="_Ticket" ThisKey="Ticket_id" OtherKey="Id" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TicketType" Member="TicketType">
+    <Type Name="Data.Dto.TicketType">
+      <Column Name="ticket_id" Member="Ticket_id" Storage="_Ticket_id" DbType="Int NOT NULL" IsPrimaryKey="true" />
+      <Column Name="labor_id" Member="Labor_id" Storage="_Labor_id" DbType="Int NOT NULL" />
+      <Association Name="FK__TicketTyp__labor__4316F928" Member="Labor" Storage="_Labor" ThisKey="Labor_id" OtherKey="Id" IsForeignKey="true" />
+      <Association Name="FK__TicketTyp__ticke__4222D4EF" Member="Ticket" Storage="_Ticket" ThisKey="Ticket_id" OtherKey="Id" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>
