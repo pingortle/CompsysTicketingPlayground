@@ -8,6 +8,15 @@
              DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <DockPanel>
         <Button DockPanel.Dock="Top" HorizontalAlignment="Left" Command="{Binding GoBack}">Back</Button>
-        <Label DockPanel.Dock="Top">This screen is not yet implemented.</Label>
+        <ListView ItemsSource="{Binding Tickets}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Command="{Binding RemoveItem}" CommandParameter="{Binding}">X</Button>
+                        <TextBlock Margin="2" Text="{Binding Text}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </DockPanel>
 </UserControl>

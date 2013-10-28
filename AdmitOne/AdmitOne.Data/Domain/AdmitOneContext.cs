@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AdmitOne.Data.Domain
 {
-    public class AdmitOneContext<T> : DataContext
+    public class AdmitOneContext : DataContext
     {
         public AdmitOneContext(IDbConnection configString) : base(configString) { }
 

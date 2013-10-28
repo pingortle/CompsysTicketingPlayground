@@ -171,6 +171,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AdmitOne.Data\AdmitOne.Data.csproj">
+      <Project>{1e89de2d-3127-48f2-9723-ff62b1522cd7}</Project>
+      <Name>AdmitOne.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

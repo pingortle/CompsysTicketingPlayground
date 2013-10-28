@@ -13,7 +13,7 @@ namespace AdmitOne.Data
     {
         public static XmlMappingSource GetMapping()
         {
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("DbMap.map"))
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("AdmitOne.Data.DbMap.map"))
             {
                 return XmlMappingSource.FromStream(stream);
             }
