@@ -1,7 +1,11 @@
-﻿using ReactiveUI;
+﻿using AdmitOne.Data.Domain;
+using AdmitOne.Data.Protozoa;
+using ReactiveUI;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Text;
 
@@ -9,10 +13,7 @@ namespace AdmitOne.ViewModel
 {
     public class CreateTicketsViewModel : ReactiveObject, IRoutableViewModel
     {
-#warning Demonstration purposes only!
-        static Random _randomThisShouldNotBeHere = new Random(0);
-
-        public CreateTicketsViewModel(IScreen screen = null)
+        public CreateTicketsViewModel(IScreen screen, IStore<Ticket> ticketBox, IStore<Customer> customerBox)
         {
             HostScreen = screen ?? new DefaultScreen(RxApp.DependencyResolver);
 
@@ -37,16 +38,31 @@ namespace AdmitOne.ViewModel
 
             _isExecuting = SaveChanges.IsExecuting.ToProperty(this, x => x.IsExecuting, false);
 
-            SaveChanges.RegisterAsyncFunction(x =>
-            {
-#warning Demonstration purposes only!
-                // Do some work which may or may not fail.
-                System.Threading.Thread.Sleep(3000);
+            SaveChanges
+                .Select(x => CurrentBatch.ToList())
+                .ObserveOn(RxApp.TaskpoolScheduler)
+                .Select(x =>
+                    {
+                        try
+                        {
+                            foreach (var t in x)
+                            {
+                                var customer = customerBox.SingleOrDefault(m => m.Id == 1);
+                                var ticket = new Ticket { Description = t.Text };
+                                customer.Tickets.Add(ticket);
+                                customerBox.Update(customer);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                            return false;
+                        }
 
-                // Return the success status of the work.
-                return _randomThisShouldNotBeHere.Next(0, 2) == 1;
-            })
-            .Subscribe(x =>
+                        return true;
+                    })
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(x =>
                     {
                         if (x)
                             (CurrentBatch as IList).Clear();

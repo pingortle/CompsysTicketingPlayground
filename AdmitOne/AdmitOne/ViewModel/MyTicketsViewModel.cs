@@ -1,4 +1,5 @@
-﻿using AdmitOne.Data.Protozoa;
+﻿using AdmitOne.Data.Domain;
+using AdmitOne.Data.Protozoa;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -10,14 +11,27 @@ namespace AdmitOne.ViewModel
 {
     public sealed class MyTicketsViewModel : ReactiveObject, IRoutableViewModel
     {
-        public MyTicketsViewModel(IScreen screen)
+        public MyTicketsViewModel(IScreen screen, ISee<Ticket> ticketViewer)
         {
             HostScreen = screen;
             GoBack = HostScreen.Router.NavigateBack;
 
-            var repo = new TicketRepository();
+            //var repo = new TicketRepository2();
+            Tickets = new ReactiveList<TicketItemViewModel>();
+            
+            var refreshTickets = new ReactiveCommand();
+            refreshTickets
+                .RegisterAsyncFunction(_ =>
+                    ticketViewer.AsEnumerable()
+                    .Select(x => new TicketItemViewModel(x.Description)))
+                .Subscribe(x =>
+                    {
+                        ReactiveList<TicketItemViewModel> tickets = (ReactiveList<TicketItemViewModel>)Tickets;
 
-            Tickets = new ReactiveList<TicketItemViewModel>(repo.GetTickets().AsEnumerable().Select(x => new TicketItemViewModel(x.Description)));
+                        foreach(var t in x)
+                            tickets.Add(t);
+                    });
+            refreshTickets.Execute(null);
         }
 
         public IReactiveCommand GoBack { get; private set; }

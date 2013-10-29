@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace AdmitOne.Data
         void Attach(object item);
     }
 
-    public interface ITable<T> : IQueryable<T>, IEnumerable<T>
+    public interface ITable<T> : IQueryable<T>, IEnumerable<T>, IEnumerable, IQueryable
     {
         void Add(T item);
         void Remove(T item);

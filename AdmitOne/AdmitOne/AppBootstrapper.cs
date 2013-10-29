@@ -1,4 +1,6 @@
-﻿using AdmitOne.View;
+﻿using AdmitOne.Data.Domain;
+using AdmitOne.Data.Protozoa;
+using AdmitOne.View;
 using AdmitOne.ViewModel;
 using ReactiveUI;
 using System;
@@ -46,10 +48,14 @@ namespace AdmitOne
             dr.Register(() => new CreateTicketsView(), typeof(IViewFor<CreateTicketsViewModel>));
             dr.Register(() => new DispatchView(), typeof(IViewFor<DispatchViewModel>));
             dr.Register(() => new MyTicketsView(), typeof(IViewFor<MyTicketsViewModel>));
-            //ViewModels
-            dr.Register(() => new CreateTicketsViewModel(dr.GetService<IScreen>()), typeof(CreateTicketsViewModel));
+            // ViewModels
+            dr.Register(() => new CreateTicketsViewModel(dr.GetService<IScreen>(), dr.GetService<IStore<Ticket>>(), dr.GetService<IStore<Customer>>()), typeof(CreateTicketsViewModel));
             dr.Register(() => new DispatchViewModel(dr.GetService<IScreen>()), typeof(DispatchViewModel));
-            dr.Register(() => new MyTicketsViewModel(dr.GetService<IScreen>()), typeof(MyTicketsViewModel));
+            dr.Register(() => new MyTicketsViewModel(dr.GetService<IScreen>(), dr.GetService<ISee<Ticket>>()), typeof(MyTicketsViewModel));
+            // Data Sources
+            dr.Register(() => new GenericRepository<Ticket>(), typeof(ISee<Ticket>));
+            dr.Register(() => new GenericRepository<Ticket>(), typeof(IStore<Ticket>));
+            dr.Register(() => new GenericRepository<Customer>(), typeof(IStore<Customer>));
         }
         #endregion
     }

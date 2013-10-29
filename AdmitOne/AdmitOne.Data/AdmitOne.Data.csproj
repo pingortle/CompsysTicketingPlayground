@@ -63,13 +63,13 @@
     <Compile Include="Domain\Repository.cs" />
     <Compile Include="AdmitOneMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Protozoa\Interfaces.cs" />
     <Compile Include="Protozoa\Protozoa.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DbMap.map" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
     <None Include="packages.config" />
     <None Include="Properties\App.config" />
   </ItemGroup>
