@@ -16,7 +16,7 @@
       <Column Name="fax" Member="Fax" Storage="_Fax" DbType="VarChar(32)" />
       <Association Name="FK__CustomerC__custo__2B3F6F97" Member="CustomerContract" Storage="_CustomerContract" ThisKey="Id" OtherKey="Customer_id" DeleteRule="NO ACTION" />
       <Association Name="FK__CustomerL__custo__3C69FB99" Member="CustomerLaborRate" Storage="_CustomerLaborRate" ThisKey="Id" OtherKey="Customer_id" DeleteRule="NO ACTION" />
-      <Association Name="FK__Ticket__customer__1A14E395" Member="Ticket" Storage="_Ticket" ThisKey="Id" OtherKey="Customer_id" DeleteRule="NO ACTION" />
+      <Association Name="FK__Ticket__customer__1A14E395" Member="Tickets" Storage="_Tickets" ThisKey="Id" OtherKey="Customer_id" DeleteRule="NO ACTION" />
     </Type>
   </Table>
   <Table Name="dbo.CustomerContract" Member="CustomerContract">

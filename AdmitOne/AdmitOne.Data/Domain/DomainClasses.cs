@@ -57,7 +57,7 @@ namespace AdmitOne.Data.Domain
         private int _Id;
         private string _Name;
         private string _Phone;
-        private ICollection<Ticket> _Ticket;
+        private ICollection<Ticket> _Tickets;
 
 
         #endregion
@@ -101,10 +101,10 @@ namespace AdmitOne.Data.Domain
             set { _Phone = value; }
         }
 
-        public ICollection<Ticket> Ticket
+        public ICollection<Ticket> Tickets
         {
-            get { return _Ticket; }
-            set { _Ticket = value; }
+            get { return _Tickets; }
+            set { _Tickets = value; }
         }
 
 
