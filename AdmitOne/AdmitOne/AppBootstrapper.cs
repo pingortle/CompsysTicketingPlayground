@@ -2,6 +2,8 @@
 using AdmitOne.Data.Protozoa;
 using AdmitOne.View;
 using AdmitOne.ViewModel;
+using Ninject;
+using Ninject.Extensions.NamedScope;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -13,50 +15,47 @@ namespace AdmitOne
 {
     public class AppBootstrapper : ReactiveObject, IScreen
     {
-        public AppBootstrapper() : this(null, null) {}
+        public AppBootstrapper() : this(null, null) { }
 
         public AppBootstrapper(IMutableDependencyResolver dependencyResolver = null, IRoutingState routingState = null)
         {
-           Router = routingState ?? new RoutingState();
-            dependencyResolver = dependencyResolver ?? RxApp.MutableResolver;
+            Router = routingState ?? new RoutingState();
 
-            RegisterDependencies(dependencyResolver);
+            #region Ninject Setup
+            var kernel = new StandardKernel();
+
+            RxApp.InitializeCustomResolver((obj, type) => kernel.Bind(type).ToConstant(obj));
+
+            RxApp.DependencyResolver = new FuncDependencyResolver((type, contract) => kernel.GetAll(type, contract));
+
+            // Singletons
+            kernel.Bind<IScreen>().ToConstant<AppBootstrapper>(this);
+            kernel.Bind<ILogPeopleIn>().To<LoginManager>().InSingletonScope();
+
+            // Data access
+            kernel.Bind<ISee<Ticket>>().To<GenericRepository<Ticket>>().InParentScope();
+            kernel.Bind<IStore<Ticket>>().To<GenericRepository<Ticket>>().InParentScope();
+            kernel.Bind<IStore<Customer>>().To<GenericRepository<Customer>>().InParentScope();
+
+            // View resolution
+            kernel.Bind<IViewFor<LoginWidgetViewModel>>().To<LoginWidgetView>();
+            kernel.Bind<IViewFor<MainViewModel>>().To<MainView>();
+            kernel.Bind<IViewFor<CreateTicketsViewModel>>().To<CreateTicketsView>();
+            kernel.Bind<IViewFor<DispatchViewModel>>().To<DispatchView>();
+            kernel.Bind<IViewFor<MyTicketsViewModel>>().To<MyTicketsView>();
+            #endregion
 
             LogHost.Default.Level = LogLevel.Debug;
 
-            LoginWidgetViewModel = new LoginWidgetViewModel(dependencyResolver.GetService<ILogPeopleIn>());
+            LoginWidgetViewModel = kernel.Get<LoginWidgetViewModel>();
 
-            Router.Navigate.Execute(new MainViewModel(dependencyResolver.GetService<IScreen>()));
+            Router.Navigate.Execute(kernel.Get<MainViewModel>());
         }
 
         public LoginWidgetViewModel LoginWidgetViewModel { get; private set; }
 
         #region Implements IScreen
         public IRoutingState Router { get; private set; }
-        #endregion
-
-        #region Private Configuration Logic
-        // This is where we configure the composition of our components.
-        private void RegisterDependencies(IMutableDependencyResolver dr)
-        {
-            //  Singletons
-            dr.RegisterConstant(this, typeof(IScreen));
-            dr.RegisterLazySingleton(() => new LoginManager(), typeof(ILogPeopleIn));
-            // Views
-            dr.Register(() => new MainView(), typeof(IViewFor<MainViewModel>));
-            dr.Register(() => new LoginWidgetView(), typeof(IViewFor<LoginWidgetViewModel>));
-            dr.Register(() => new CreateTicketsView(), typeof(IViewFor<CreateTicketsViewModel>));
-            dr.Register(() => new DispatchView(), typeof(IViewFor<DispatchViewModel>));
-            dr.Register(() => new MyTicketsView(), typeof(IViewFor<MyTicketsViewModel>));
-            // ViewModels
-            dr.Register(() => new CreateTicketsViewModel(dr.GetService<IScreen>(), dr.GetService<IStore<Ticket>>(), dr.GetService<IStore<Customer>>()), typeof(CreateTicketsViewModel));
-            dr.Register(() => new DispatchViewModel(dr.GetService<IScreen>()), typeof(DispatchViewModel));
-            dr.Register(() => new MyTicketsViewModel(dr.GetService<IScreen>(), dr.GetService<ISee<Ticket>>()), typeof(MyTicketsViewModel));
-            // Data Sources
-            dr.Register(() => new GenericRepository<Ticket>(), typeof(ISee<Ticket>));
-            dr.Register(() => new GenericRepository<Ticket>(), typeof(IStore<Ticket>));
-            dr.Register(() => new GenericRepository<Customer>(), typeof(IStore<Customer>));
-        }
         #endregion
     }
 }
