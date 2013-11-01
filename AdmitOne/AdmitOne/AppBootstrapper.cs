@@ -11,11 +11,11 @@ namespace AdmitOne
 {
     public class AppBootstrapper : ReactiveObject, IScreen
     {
-        public AppBootstrapper() : this(null, null) {}
+        public AppBootstrapper() : this(null, null) { }
 
         public AppBootstrapper(IMutableDependencyResolver dependencyResolver = null, IRoutingState routingState = null)
         {
-           Router = routingState ?? new RoutingState();
+            Router = routingState ?? new RoutingState();
             dependencyResolver = dependencyResolver ?? RxApp.MutableResolver;
 
             RegisterDependencies(dependencyResolver);
