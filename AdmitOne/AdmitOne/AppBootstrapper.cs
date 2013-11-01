@@ -1,6 +1,8 @@
-﻿using AdmitOne.View;
+﻿using AdmitOne.Persistence;
+using AdmitOne.View;
 using AdmitOne.ViewModel;
 using Ninject;
+using Ninject.Extensions.NamedScope;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -39,6 +41,10 @@ namespace AdmitOne
             kernel.Bind<IViewFor<CreateTicketsViewModel>>().To<CreateTicketsView>();
             kernel.Bind<IViewFor<DispatchViewModel>>().To<DispatchView>();
             kernel.Bind<IViewFor<MyTicketsViewModel>>().To<MyTicketsView>();
+
+            // Persistence
+            kernel.Bind<IRepository>().To<TicketingRepository>().InParentScope();
+
             #endregion
 
             LogHost.Default.Level = LogLevel.Debug;

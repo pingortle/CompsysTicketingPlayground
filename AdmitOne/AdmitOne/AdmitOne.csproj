@@ -177,6 +177,16 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AdmitOne.Domain\AdmitOne.Domain.csproj">
+      <Project>{6533215e-e061-4321-a0e7-d6dd27de8949}</Project>
+      <Name>AdmitOne.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AdmitOne.Persistence\AdmitOne.Persistence.csproj">
+      <Project>{e56e1bc7-30da-411c-895e-ff5d0bb61906}</Project>
+      <Name>AdmitOne.Persistence</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

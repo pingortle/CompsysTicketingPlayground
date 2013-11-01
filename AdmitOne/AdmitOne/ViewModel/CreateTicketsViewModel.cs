@@ -1,4 +1,6 @@
-﻿using ReactiveUI;
+﻿using AdmitOne.Domain;
+using AdmitOne.Persistence;
+using ReactiveUI;
 using System;
 using System.Collections;
 using System.Linq;
@@ -9,10 +11,7 @@ namespace AdmitOne.ViewModel
 {
     public class CreateTicketsViewModel : ReactiveObject, IRoutableViewModel
     {
-#warning Demonstration purposes only!
-        static Random _randomThisShouldNotBeHere = new Random(0);
-
-        public CreateTicketsViewModel(IScreen screen = null)
+        public CreateTicketsViewModel(IRepository repository, IScreen screen = null)
         {
             HostScreen = screen ?? new DefaultScreen(RxApp.DependencyResolver);
 
@@ -37,15 +36,29 @@ namespace AdmitOne.ViewModel
 
             _isExecuting = SaveChanges.IsExecuting.ToProperty(this, x => x.IsExecuting, false);
 
-            SaveChanges.RegisterAsyncFunction(x =>
+            SaveChanges.Select(x => CurrentBatch.ToList())
+                .ObserveOn(RxApp.TaskpoolScheduler)
+                .Select(x =>
             {
-#warning Demonstration purposes only!
-                // Do some work which may or may not fail.
-                System.Threading.Thread.Sleep(3000);
+                try
+                {
+                    var tickets = repository.GetStoreOf<Ticket>();
+                    using (tickets.ScopedChanges())
+                    {
+                        foreach (var item in x)
+                        {
+                            tickets.Add(new Ticket { Description = item.Text, CustomerId = 1 });
+                        }
+                    }
+                }
+                catch
+                {
+                    return false;
+                }
 
-                // Return the success status of the work.
-                return _randomThisShouldNotBeHere.Next(0, 2) == 1;
+                return true;
             })
+            .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(x =>
                     {
                         if (x)
