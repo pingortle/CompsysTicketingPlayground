@@ -18,6 +18,19 @@ namespace AdmitOne.ViewModel
             GoBack = HostScreen.Router.NavigateBack;
 
             CurrentBatch = new ReactiveList<TicketItemViewModel>();
+            Customers = new ReactiveList<Customer>();
+
+            var repositoryObservable = Observable.Defer(() =>
+                repository.GetStoreOf<Customer>().ToObservable())
+                .SubscribeOn(RxApp.TaskpoolScheduler)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Publish();
+            repositoryObservable.Connect();
+
+            repositoryObservable.Subscribe(x =>
+                    {
+                        Customers.Add(x);
+                    });
 
             AddTicket = new ReactiveCommand(
                 this.WhenAny(
@@ -31,8 +44,10 @@ namespace AdmitOne.ViewModel
                 });
 
             var anyInList = CurrentBatch.Changed.Select(_ => CurrentBatch.Any());
+            var isCustomerSelected = this.WhenAnyValue(x => x.SelectedCustomer).Select(x => x != null);
+            var shouldSaveChanges = Observable.CombineLatest(anyInList, isCustomerSelected, (x, y) => x && y);
 
-            SaveChanges = new ReactiveCommand(anyInList.StartWith(false));
+            SaveChanges = new ReactiveCommand(shouldSaveChanges.StartWith(false));
 
             _isExecuting = SaveChanges.IsExecuting.ToProperty(this, x => x.IsExecuting, false);
 
@@ -47,7 +62,7 @@ namespace AdmitOne.ViewModel
                     {
                         foreach (var item in x)
                         {
-                            tickets.Add(new Ticket { Description = item.Text, CustomerId = 1 });
+                            tickets.Add(new Ticket { Description = item.Text, CustomerId = SelectedCustomer.Id });
                         }
                     }
                 }
@@ -65,6 +80,21 @@ namespace AdmitOne.ViewModel
                             (CurrentBatch as IList).Clear();
                     });
         }
+
+        private Customer _selectedCustomer;
+        public Customer SelectedCustomer
+        {
+            get
+            {
+                return _selectedCustomer;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _selectedCustomer, value);
+            }
+        }
+
+        public IReactiveList<Customer> Customers { get; private set; }
 
         private ObservableAsPropertyHelper<bool> _isExecuting;
         public bool IsExecuting { get { return _isExecuting.Value; } }
