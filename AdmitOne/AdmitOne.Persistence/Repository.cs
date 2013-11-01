@@ -26,17 +26,19 @@ namespace AdmitOne.Persistence
             return _context.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
 
                 // Filter by...
-                .Where(x =>
-                {
+                .Where(p =>
+
                     // Restricting to generically typed properties
-                    return x.PropertyType.IsGenericType &&
-                        (
+                     p.PropertyType.IsGenericType &&
+
                         // Checking if the property is an IDbSet<> itself, or...
-                            (x.PropertyType.IsInterface && x.PropertyType.GetGenericTypeDefinition() == typeof(IDbSet<>)) ||
+                            ((p.PropertyType.IsInterface && p.PropertyType.GetGenericTypeDefinition() == typeof(IDbSet<>)) ||
+
                         // Checking if the property implements IDbSet<>
-                            (x.PropertyType.GetInterfaces().Where(m => m.IsGenericType).Select(m => m.GetGenericTypeDefinition()).Any(m => m == typeof(IDbSet<>)))
-                        );
-                })
+                            (p.PropertyType.GetInterfaces()
+                                .Where(m => m.IsGenericType)
+                                .Select(m => m.GetGenericTypeDefinition())
+                                .Any(m => m == typeof(IDbSet<>)))))
 
                 // Then dump all of the resulting type arguments into one Enumerable
                 .SelectMany(x => x.PropertyType.GetGenericArguments());
