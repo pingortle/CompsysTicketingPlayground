@@ -6,11 +6,11 @@ using System.Reflection;
 
 namespace AdmitOne.Persistence
 {
-    public class Repository<T> : IRepository where T : DbContext
+    public class Repository : IRepository
     {
         private DbContext _context;
 
-        internal Repository(T context)
+        internal Repository(DbContext context)
         {
             _context = context;
         }
@@ -23,7 +23,7 @@ namespace AdmitOne.Persistence
         public IEnumerable<Type> GetAvailableTypes()
         {
             // Get all of the public, instance properties
-            return typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            return _context.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
 
                 // Filter by...
                 .Where(x =>
