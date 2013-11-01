@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdmitOne", "AdmitOne\AdmitOne.csproj", "{0904DFBA-01D7-48D6-B1B6-69906797F001}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdmitOne.Domain", "AdmitOne.Domain\AdmitOne.Domain.csproj", "{6533215E-E061-4321-A0E7-D6DD27DE8949}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdmitOne.Persistence", "AdmitOne.Persistence\AdmitOne.Persistence.csproj", "{E56E1BC7-30DA-411C-895E-FF5D0BB61906}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +17,14 @@ Global
 		{0904DFBA-01D7-48D6-B1B6-69906797F001}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0904DFBA-01D7-48D6-B1B6-69906797F001}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0904DFBA-01D7-48D6-B1B6-69906797F001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6533215E-E061-4321-A0E7-D6DD27DE8949}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6533215E-E061-4321-A0E7-D6DD27DE8949}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6533215E-E061-4321-A0E7-D6DD27DE8949}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6533215E-E061-4321-A0E7-D6DD27DE8949}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E56E1BC7-30DA-411C-895E-FF5D0BB61906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E56E1BC7-30DA-411C-895E-FF5D0BB61906}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E56E1BC7-30DA-411C-895E-FF5D0BB61906}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E56E1BC7-30DA-411C-895E-FF5D0BB61906}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
