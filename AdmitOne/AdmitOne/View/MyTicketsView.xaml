@@ -6,8 +6,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
     <DockPanel>
         <Button DockPanel.Dock="Top" HorizontalAlignment="Left" Command="{Binding GoBack}">Back</Button>
+        <ProgressBar Height="10" DockPanel.Dock="Bottom" Visibility="{Binding IsFetchingTickets, Converter={StaticResource BoolToVis}}" IsIndeterminate="True" />
         <ListView ItemsSource="{Binding Tickets}">
             <ListView.ItemTemplate>
                 <DataTemplate>

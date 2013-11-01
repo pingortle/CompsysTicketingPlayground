@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reactive.Linq;
 
 namespace AdmitOne.ViewModel
 {
@@ -16,8 +17,29 @@ namespace AdmitOne.ViewModel
             HostScreen = screen;
             GoBack = HostScreen.Router.NavigateBack;
 
-            Tickets = new ReactiveList<Ticket>(repository.GetStoreOf<Ticket>().OrderByDescending(x => x.Id));
+            Tickets = new ReactiveList<Ticket>();
+            
+            var repositoryObservable = Observable.Defer(() =>
+                repository.GetStoreOf<Ticket>().ToObservable())
+                .SubscribeOn(RxApp.TaskpoolScheduler)
+                .ObserveOn(RxApp.MainThreadScheduler);
+
+            var published = Observable.Publish(repositoryObservable);
+            published.Connect();
+
+            published
+                .Subscribe(x =>
+                    {
+                        Tickets.Add(x);
+                    });
+
+            _isFetchingTickets = published
+                .Select(_ => false)
+                .ToProperty(this, x => x.IsFetchingTickets, true);
         }
+
+        private ObservableAsPropertyHelper<bool> _isFetchingTickets;
+        public bool IsFetchingTickets { get { return _isFetchingTickets.Value; } }
 
         public IReactiveCollection<Ticket> Tickets { get; set; }
 
