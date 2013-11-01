@@ -5,11 +5,6 @@ using AdmitOne.ViewModel;
 using Ninject;
 using Ninject.Extensions.NamedScope;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdmitOne
 {
