@@ -13,15 +13,15 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="300" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <WrapPanel Grid.Row="1" Grid.Column="1">
+            <WrapPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
                 <Button MinWidth="100" Height="100" Command="{Binding NavigateToDispatch}">Dispatch</Button>
                 <Button MinWidth="100" Height="100" Command="{Binding NavigateToMyTickets}">My Tickets</Button>
                 <Button MinWidth="100" Height="100">Manage</Button>
