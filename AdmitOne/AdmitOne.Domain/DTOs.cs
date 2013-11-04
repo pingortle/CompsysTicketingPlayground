@@ -20,5 +20,7 @@ namespace AdmitOne.Domain
         public string Description { get; set; }
 
         public int CustomerId { get; set; }
+
+        public virtual Customer Customer { get; set; }
     }
 }
