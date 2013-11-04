@@ -12,18 +12,23 @@ namespace AdmitOne.ViewModel
     {
         public CreateTicketsViewModel(ISession session, IScreen screen = null)
         {
+            #region Initialization
             HostScreen = screen ?? new DefaultScreen(RxApp.DependencyResolver);
 
             GoBack = HostScreen.Router.NavigateBack;
-
+            
             CurrentBatch = new ReactiveList<TicketItemViewModel>();
             Customers = new ReactiveList<Customer>();
+            #endregion
 
+            #region Populate Customer List
             var getFreshCustomers = new ReactiveCommand();
             getFreshCustomers.RegisterAsyncFunction(_ => session.GetStoreOf<Customer>().ToList())
                 .Subscribe(x => x.ForEach(c => Customers.Add(c)));
             getFreshCustomers.Execute(default(object));
+            #endregion
 
+            #region Wire Up Commands
             AddTicket = new ReactiveCommand(
                 this.WhenAny(
                 x => x.CurrentBatch,
@@ -46,31 +51,36 @@ namespace AdmitOne.ViewModel
             SaveChanges.Select(x => CurrentBatch.ToList())
                 .ObserveOn(RxApp.TaskpoolScheduler)
                 .Select(x =>
-            {
-                try
-                {
-                    var tickets = session.GetStoreOf<Ticket>();
-                    using (tickets.ScopedChanges())
                     {
-                        foreach (var item in x)
+                        try
                         {
-                            tickets.Add(new Ticket { Description = item.Text, CustomerId = SelectedCustomer.Id });
+                            var tickets = session.GetStoreOf<Ticket>();
+                            using (tickets.ScopedChanges())
+                            {
+                                foreach (var item in x)
+                                {
+                                    tickets.Add(new Ticket
+                                    {
+                                        Description = item.Text,
+                                        CustomerId = SelectedCustomer.Id
+                                    });
+                                }
+                            }
                         }
-                    }
-                }
-                catch
-                {
-                    return false;
-                }
+                        catch
+                        {
+                            return false;
+                        }
 
-                return true;
-            })
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(x =>
+                        return true;
+                    })
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(x =>
                     {
                         if (x)
                             (CurrentBatch as IList).Clear();
                     });
+            #endregion
         }
 
         private Customer _selectedCustomer;
