@@ -49,9 +49,9 @@
     <Compile Include="Interfaces.cs" />
     <Compile Include="NotCool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository.cs" />
+    <Compile Include="Session.cs" />
     <Compile Include="Store.cs" />
-    <Compile Include="TicketingRepository.cs" />
+    <Compile Include="TicketingSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

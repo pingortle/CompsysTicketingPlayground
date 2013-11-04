@@ -6,11 +6,11 @@ using System.Reflection;
 
 namespace AdmitOne.Persistence
 {
-    public class Repository : IRepository
+    public class Session : ISession
     {
         private DbContext _context;
 
-        internal Repository(DbContext context)
+        internal Session(DbContext context)
         {
             _context = context;
         }

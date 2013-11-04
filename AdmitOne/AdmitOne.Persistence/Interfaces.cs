@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AdmitOne.Persistence
 {
-    public interface IRepository : IDisposable
+    public interface ISession : IDisposable
     {
         IStore<T> GetStoreOf<T>();
         IEnumerable<Type> GetAvailableTypes();

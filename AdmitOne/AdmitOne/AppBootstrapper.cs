@@ -37,7 +37,7 @@ namespace AdmitOne
             kernel.Bind<IViewFor<MyTicketsViewModel>>().To<MyTicketsView>();
 
             // Persistence
-            kernel.Bind<IRepository>().To<TicketingRepository>().InParentScope();
+            kernel.Bind<ISession>().To<TicketingSession>().InParentScope();
 
             #endregion
 

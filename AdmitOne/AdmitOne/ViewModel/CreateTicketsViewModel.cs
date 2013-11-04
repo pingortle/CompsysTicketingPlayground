@@ -10,7 +10,7 @@ namespace AdmitOne.ViewModel
 {
     public class CreateTicketsViewModel : ReactiveObject, IRoutableViewModel
     {
-        public CreateTicketsViewModel(IRepository repository, IScreen screen = null)
+        public CreateTicketsViewModel(ISession session, IScreen screen = null)
         {
             HostScreen = screen ?? new DefaultScreen(RxApp.DependencyResolver);
 
@@ -19,14 +19,14 @@ namespace AdmitOne.ViewModel
             CurrentBatch = new ReactiveList<TicketItemViewModel>();
             Customers = new ReactiveList<Customer>();
 
-            var repositoryObservable = Observable.Defer(() =>
-                repository.GetStoreOf<Customer>().ToObservable())
+            var sessionObservable = Observable.Defer(() =>
+                session.GetStoreOf<Customer>().ToObservable())
                 .SubscribeOn(RxApp.TaskpoolScheduler)
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Publish();
-            repositoryObservable.Connect();
+            sessionObservable.Connect();
 
-            repositoryObservable.Subscribe(x =>
+            sessionObservable.Subscribe(x =>
                     {
                         Customers.Add(x);
                     });
@@ -56,7 +56,7 @@ namespace AdmitOne.ViewModel
             {
                 try
                 {
-                    var tickets = repository.GetStoreOf<Ticket>();
+                    var tickets = session.GetStoreOf<Ticket>();
                     using (tickets.ScopedChanges())
                     {
                         foreach (var item in x)

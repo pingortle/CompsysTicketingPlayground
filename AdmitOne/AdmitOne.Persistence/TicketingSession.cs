@@ -5,9 +5,9 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace AdmitOne.Persistence
 {
-    public class TicketingRepository : Repository
+    public class TicketingSession : Session
     {
-        public TicketingRepository() : base(new TicketingContext()) { }
+        public TicketingSession() : base(new TicketingContext()) { }
     }
 
     internal sealed class TicketSysDbConfiguration : DbConfiguration

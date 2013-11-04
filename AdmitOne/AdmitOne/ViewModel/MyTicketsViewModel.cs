@@ -8,19 +8,19 @@ namespace AdmitOne.ViewModel
 {
     public sealed class MyTicketsViewModel : ReactiveObject, IRoutableViewModel
     {
-        public MyTicketsViewModel(IScreen screen, IRepository repository)
+        public MyTicketsViewModel(IScreen screen, ISession session)
         {
             HostScreen = screen;
             GoBack = HostScreen.Router.NavigateBack;
 
             Tickets = new ReactiveList<Ticket>();
             
-            var repositoryObservable = Observable.Defer(() =>
-                repository.GetStoreOf<Ticket>().ToObservable())
+            var sessionObservable = Observable.Defer(() =>
+                session.GetStoreOf<Ticket>().ToObservable())
                 .SubscribeOn(RxApp.TaskpoolScheduler)
                 .ObserveOn(RxApp.MainThreadScheduler);
 
-            var published = Observable.Publish(repositoryObservable);
+            var published = Observable.Publish(sessionObservable);
             published.Connect();
 
             published
