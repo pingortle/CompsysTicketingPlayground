@@ -1,8 +1,9 @@
 ﻿using AdmitOne.Domain;
 using AdmitOne.Persistence;
 using ReactiveUI;
-using System;
+using System.Linq;
 using System.Reactive.Linq;
+using System;
 
 namespace AdmitOne.ViewModel
 {
@@ -14,24 +15,15 @@ namespace AdmitOne.ViewModel
             GoBack = HostScreen.Router.NavigateBack;
 
             Tickets = new ReactiveList<Ticket>();
-            
-            var sessionObservable = Observable.Defer(() =>
-                session.GetStoreOf<Ticket>().ToObservable())
-                .SubscribeOn(RxApp.TaskpoolScheduler)
-                .ObserveOn(RxApp.MainThreadScheduler);
 
-            var published = Observable.Publish(sessionObservable);
-            published.Connect();
+            var getFreshTickets = new ReactiveCommand();
+            getFreshTickets.RegisterAsyncFunction(_ => session.GetStoreOf<Ticket>().ToList())
+                .Subscribe(x => x.ForEach(t => Tickets.Add(t)));
 
-            published
-                .Subscribe(x =>
-                    {
-                        Tickets.Add(x);
-                    });
-
-            _isFetchingTickets = published
-                .Select(_ => false)
+            _isFetchingTickets = getFreshTickets.IsExecuting
                 .ToProperty(this, x => x.IsFetchingTickets, true);
+
+            getFreshTickets.Execute(default(object));
         }
 
         private ObservableAsPropertyHelper<bool> _isFetchingTickets;

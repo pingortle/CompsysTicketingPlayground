@@ -19,17 +19,10 @@ namespace AdmitOne.ViewModel
             CurrentBatch = new ReactiveList<TicketItemViewModel>();
             Customers = new ReactiveList<Customer>();
 
-            var sessionObservable = Observable.Defer(() =>
-                session.GetStoreOf<Customer>().ToObservable())
-                .SubscribeOn(RxApp.TaskpoolScheduler)
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .Publish();
-            sessionObservable.Connect();
-
-            sessionObservable.Subscribe(x =>
-                    {
-                        Customers.Add(x);
-                    });
+            var getFreshCustomers = new ReactiveCommand();
+            getFreshCustomers.RegisterAsyncFunction(_ => session.GetStoreOf<Customer>().ToList())
+                .Subscribe(x => x.ForEach(c => Customers.Add(c)));
+            getFreshCustomers.Execute(default(object));
 
             AddTicket = new ReactiveCommand(
                 this.WhenAny(
