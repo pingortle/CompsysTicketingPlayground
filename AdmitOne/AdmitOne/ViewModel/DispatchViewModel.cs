@@ -20,11 +20,13 @@ namespace AdmitOne.ViewModel
 
             var getFreshTechs = new ReactiveCommand();
             getFreshTechs.ObserveOn(RxApp.MainThreadScheduler).Subscribe(_ => Techs.Clear());
+
             var gotFreshTechs = getFreshTechs.RegisterAsyncFunction(_ => session.GetStoreOf<Employee>().Select(x => x.Name).ToList());
             gotFreshTechs.Subscribe(x => x.ForEach(t => Techs.Add(t)));
 
             var getFreshTickets = new ReactiveCommand();
             getFreshTickets.ObserveOn(RxApp.MainThreadScheduler).Subscribe(_ => Tickets.Clear());
+
             var gotFreshTickets = getFreshTickets.RegisterAsyncFunction(_ => session.GetStoreOf<Ticket>().Select(x => x.Description).ToList());
             gotFreshTickets.Subscribe(x => x.ForEach(t => Tickets.Add(t)));
 
