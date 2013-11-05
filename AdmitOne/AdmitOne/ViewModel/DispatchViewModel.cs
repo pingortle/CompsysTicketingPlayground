@@ -15,23 +15,35 @@ namespace AdmitOne.ViewModel
             HostScreen = screen;
             GoBack = HostScreen.Router.NavigateBack;
 
-            Techs = new ReactiveList<string>();
-            Tickets = new ReactiveList<string>();
+            Techs = new ReactiveList<Employee>();
+            Tickets = new ReactiveList<Ticket>();
+
+            // This illustrates the need for a mechanism to lock down the commands which reference a context.
+            // Maybe it should be a view layer ReactiveCommand implementation?
+            Assign = new ReactiveCommand(this.WhenAny(x => x.SelectedEmployee, y => y.SelectedTicket, (x, y) => x.Value != null && y.Value != null));
+            Assign.RegisterAsyncAction(_ =>
+                {
+                    var events = session.GetStoreOf<TicketEvent>();
+                    using (events.ScopedChanges())
+                    {
+                        events.Add(new TicketEvent { Employee = SelectedEmployee, Ticket = SelectedTicket, TicketStatus = TicketStatus.Assigned, Time = DateTime.Now });
+                    }
+                });
 
             var getFreshTechs = new ReactiveCommand();
             getFreshTechs.ObserveOn(RxApp.MainThreadScheduler).Subscribe(_ => Techs.Clear());
 
-            var gotFreshTechs = getFreshTechs.RegisterAsyncFunction(_ => session.GetStoreOf<Employee>().Select(x => x.Name).ToList());
+            var gotFreshTechs = getFreshTechs.RegisterAsyncFunction(_ => session.GetStoreOf<Employee>().ToList());
             gotFreshTechs.Subscribe(x => x.ForEach(t => Techs.Add(t)));
 
             var getFreshTickets = new ReactiveCommand();
             getFreshTickets.ObserveOn(RxApp.MainThreadScheduler).Subscribe(_ => Tickets.Clear());
 
-            var gotFreshTickets = getFreshTickets.RegisterAsyncFunction(_ => session.GetStoreOf<Ticket>().Select(x => x.Description).ToList());
+            var gotFreshTickets = getFreshTickets.RegisterAsyncFunction(_ => session.GetStoreOf<Ticket>().ToList());
             gotFreshTickets.Subscribe(x => x.ForEach(t => Tickets.Add(t)));
 
             IEnumerable<IReactiveCommand> dataAccessCommands = new[] { getFreshTechs, getFreshTickets };
-            var masterCommand = dataAccessCommands.JoinMutuallyExclusiveAsyncCommands(new[]
+            var masterCommand = dataAccessCommands.JoinMutuallyExclusiveAsyncCommands(new IObservable<object>[]
             {
                 gotFreshTechs,
                 gotFreshTickets
@@ -46,11 +58,26 @@ namespace AdmitOne.ViewModel
             masterCommand.Execute(default(object));
         }
 
-        public IReactiveCollection<string> Techs { get; private set; }
-        public IReactiveCollection<string> Tickets { get; private set; }
+        public IReactiveCollection<Employee> Techs { get; private set; }
+        public IReactiveCollection<Ticket> Tickets { get; private set; }
+
+        private Employee _selectedEmployee;
+        public Employee SelectedEmployee
+        {
+            get { return _selectedEmployee; }
+            set { this.RaiseAndSetIfChanged(ref _selectedEmployee, value); }
+        }
+
+        private Ticket _selectedTicket;
+        public Ticket SelectedTicket
+        {
+            get { return _selectedTicket; }
+            set { this.RaiseAndSetIfChanged(ref _selectedTicket, value); }
+        }
 
         public IReactiveCommand GoBack { get; private set; }
         public IReactiveCommand Refresh { get; private set; }
+        public IReactiveCommand Assign { get; private set; }
 
         private ObservableAsPropertyHelper<string> _error;
         public string Error { get { return _error.Value; } }

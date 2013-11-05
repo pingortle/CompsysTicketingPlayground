@@ -18,10 +18,22 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
-            <ListBox Grid.Column="0" ItemsSource="{Binding Techs}" />
-            
-            <ListBox Grid.Column="1" ItemsSource="{Binding Tickets}" />
+
+            <ListBox Grid.Column="0" ItemsSource="{Binding Techs}" SelectedItem="{Binding SelectedEmployee}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <ListBox Grid.Column="1" ItemsSource="{Binding Tickets}" SelectedItem="{Binding SelectedTicket}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Description}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </DockPanel>
 </UserControl>
