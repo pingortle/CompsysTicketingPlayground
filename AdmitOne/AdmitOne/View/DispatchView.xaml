@@ -8,6 +8,11 @@
              DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <DockPanel>
         <Button DockPanel.Dock="Top" Command="{Binding GoBack}" HorizontalAlignment="Left">Back</Button>
+        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Error}" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
+            <Button Command="{Binding Assign}">Assign</Button>
+            <Button Command="{Binding Refresh}">Refresh</Button>
+        </StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
