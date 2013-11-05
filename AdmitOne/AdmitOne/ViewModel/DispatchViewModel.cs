@@ -34,6 +34,10 @@ namespace AdmitOne.ViewModel
             Refresh = masterCommand;
             Refresh.Subscribe(_ => { Techs.Clear(); Tickets.Clear(); });
 
+            _error = Observable.Merge(dataAccessCommands.Select(x => x.ThrownExceptions))
+                .Select(x => x.Message)
+                .ToProperty(this, x => x.Error);
+
             masterCommand.Execute(default(object));
         }
 
@@ -62,6 +66,9 @@ namespace AdmitOne.ViewModel
 
         public IReactiveCommand GoBack { get; private set; }
         public IReactiveCommand Refresh { get; private set; }
+
+        private ObservableAsPropertyHelper<string> _error;
+        public string Error { get { return _error.Value; } }
 
         public IScreen HostScreen { get; private set; }
 
