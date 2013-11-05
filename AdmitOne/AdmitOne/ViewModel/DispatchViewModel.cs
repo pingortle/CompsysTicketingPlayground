@@ -18,18 +18,6 @@ namespace AdmitOne.ViewModel
             Techs = new ReactiveList<Employee>();
             Tickets = new ReactiveList<Ticket>();
 
-            // This illustrates the need for a mechanism to lock down the commands which reference a context.
-            // Maybe it should be a view layer ReactiveCommand implementation?
-            Assign = new ReactiveCommand(this.WhenAny(x => x.SelectedEmployee, y => y.SelectedTicket, (x, y) => x.Value != null && y.Value != null));
-            Assign.RegisterAsyncAction(_ =>
-                {
-                    var events = session.GetStoreOf<TicketEvent>();
-                    using (events.ScopedChanges())
-                    {
-                        events.Add(new TicketEvent { Employee = SelectedEmployee, Ticket = SelectedTicket, TicketStatus = TicketStatus.Assigned, Time = DateTime.Now });
-                    }
-                });
-
             var getFreshTechs = new ReactiveCommand();
             getFreshTechs.ObserveOn(RxApp.MainThreadScheduler).Subscribe(_ => Techs.Clear());
 
@@ -50,6 +38,24 @@ namespace AdmitOne.ViewModel
             });
 
             Refresh = masterCommand;
+
+            // This illustrates the need for a mechanism to lock down the commands which reference a context.
+            // Maybe it should be a view layer ReactiveCommand implementation?
+            Assign = new ReactiveCommand(Observable.CombineLatest(
+                this.WhenAny(
+                    x => x.SelectedEmployee,
+                    y => y.SelectedTicket,
+                    (x, y) => x.Value != null && y.Value != null),
+                masterCommand.CanExecuteObservable,
+                (x, y) => x && y));
+            Assign.RegisterAsyncAction(_ =>
+            {
+                var events = session.GetStoreOf<TicketEvent>();
+                using (events.ScopedChanges())
+                {
+                    events.Add(new TicketEvent { Employee = SelectedEmployee, Ticket = SelectedTicket, TicketStatus = TicketStatus.Assigned, Time = DateTime.Now });
+                }
+            });
 
             _error = Observable.Merge(dataAccessCommands.Select(x => x.ThrownExceptions))
                 .Select(x => x.Message)
