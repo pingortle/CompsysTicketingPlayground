@@ -8,6 +8,8 @@ namespace AdmitOne.Persistence
     {
         IStore<T> GetStoreOf<T>();
         IEnumerable<Type> GetAvailableTypes();
+
+        IObservable<IEnumerable<T>> FetchResults<T>(IQuery<T> query);
     }
 
     public interface ISee<out T> : IQueryable<T>, IEnumerable<T> { }
@@ -26,4 +28,13 @@ namespace AdmitOne.Persistence
     }
 
     public interface IStore<T> : IStore<T, T> { }
+
+    public interface IQuery<T>
+    {
+        IQueryable<T> Queryable { get; }
+
+        IQuery<T> With(IQuery<T> query);
+
+        IEnumerable<T> Against(IQueryable<T> source);
+    }
 }

@@ -49,5 +49,10 @@ namespace AdmitOne.Persistence
             if (_context != null)
                 _context.Dispose();
         }
+
+        public IObservable<IEnumerable<T>> FetchResults<T>(IQuery<T> query)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
