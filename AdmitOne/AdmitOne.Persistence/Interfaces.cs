@@ -33,10 +33,13 @@ namespace AdmitOne.Persistence
 
     public interface IStore<T> : IStore<T, T> { }
 
-    public interface IQuery<T>
+    public interface IQuery<in TSource, out TResult>
     {
-        IEnumerable<T> Against(IQueryable<T> source);
+        IEnumerable<TResult> Against(IQueryable<TSource> source);
     }
+
+    public interface IQuery<T> : IQuery<T, T>
+    {}
 
     public interface INotifyWhenComplete : IDisposable
     {
