@@ -55,7 +55,7 @@ namespace AdmitOne.ViewModel
                         try
                         {
                             var tickets = session.GetStoreOf<Ticket>();
-                            using (tickets.ScopedChanges())
+                            using (session.ScopedChanges())
                             {
                                 foreach (var item in x)
                                 {

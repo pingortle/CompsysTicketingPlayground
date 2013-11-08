@@ -51,7 +51,7 @@ namespace AdmitOne.ViewModel
             Assign.RegisterAsyncAction(_ =>
             {
                 var events = session.GetStoreOf<TicketEvent>();
-                using (events.ScopedChanges())
+                using (session.ScopedChanges())
                 {
                     events.Add(new TicketEvent { Employee = SelectedEmployee, Ticket = SelectedTicket, TicketStatus = TicketStatus.Assigned, Time = DateTime.Now });
                 }

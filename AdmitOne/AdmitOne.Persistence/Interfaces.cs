@@ -9,7 +9,10 @@ namespace AdmitOne.Persistence
         IStore<T> GetStoreOf<T>();
         IEnumerable<Type> GetAvailableTypes();
 
-        IObservable<IEnumerable<T>> FetchResults<T>(IQuery<T> query);
+        IDisposable ScopedChanges();
+
+        IObservable<T> FetchResults<T>(IQuery<T> query);
+        IObservable<bool> IsFetchingResults { get; }
     }
 
     public interface ISee<out T> : IQueryable<T>, IEnumerable<T> { }
@@ -23,9 +26,7 @@ namespace AdmitOne.Persistence
     }
 
     public interface IStore<in T1, out T2> : ITake<T1>, ISee<T2>
-    {
-        IDisposable ScopedChanges();
-    }
+    {}
 
     public interface IStore<T> : IStore<T, T> { }
 
