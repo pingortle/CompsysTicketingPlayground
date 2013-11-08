@@ -15,6 +15,7 @@ namespace AdmitOne.Persistence
         IObservable<T> FetchResults<T>();
         IObservable<T> FetchResults<T>(IQuery<T> query);
         IObservable<bool> IsWorking { get; }
+        IObservable<Exception> ThrownExceptions { get; }
     }
 
     public interface ISee<out T> : IQueryable<T>, IEnumerable<T> { }
