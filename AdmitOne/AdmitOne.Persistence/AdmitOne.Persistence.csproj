@@ -68,6 +68,7 @@
     <Compile Include="Session.cs" />
     <Compile Include="Store.cs" />
     <Compile Include="TicketingSession.cs" />
+    <Compile Include="TicketQuery.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
