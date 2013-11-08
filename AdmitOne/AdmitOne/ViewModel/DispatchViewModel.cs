@@ -59,6 +59,11 @@ namespace AdmitOne.ViewModel
                 }
             });
 
+            _error = session.ThrownExceptions
+                .Select(x => x.Message)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .ToProperty(this, x => x.Error);
+
             Refresh.Execute(default(object));
         }
 
