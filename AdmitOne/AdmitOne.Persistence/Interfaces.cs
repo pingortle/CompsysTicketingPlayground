@@ -32,8 +32,6 @@ namespace AdmitOne.Persistence
 
     public interface IQuery<T>
     {
-        IQuery<T> With(IQuery<T> query);
-
         IEnumerable<T> Against(IQueryable<T> source);
     }
 }
