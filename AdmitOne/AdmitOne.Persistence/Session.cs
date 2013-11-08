@@ -83,15 +83,15 @@ namespace AdmitOne.Persistence
                 {
                     query.Against(LookAt<TSource>())
                         .ToObservable()
-                        .Finally(() =>
-                        {
-                            lock (_isProcessing) _isProcessing.OnNext(false);
-                        })
                         .Subscribe(subj);
                 }
                 catch (Exception ex)
                 {
                     _exceptions.OnNext(ex);
+                }
+                finally
+                {
+                    lock (_isProcessing) _isProcessing.OnNext(false);
                 }
             });
 
