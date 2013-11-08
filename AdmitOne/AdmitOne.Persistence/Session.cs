@@ -65,19 +65,18 @@ namespace AdmitOne.Persistence
 
         public IObservable<T> FetchResults<T>()
         {
-            return FetchResults<T>(null);
+            return FetchResults<T, T>(new Query<T>());
         }
 
-        public IObservable<T> FetchResults<T>(IQuery<T> query = null)
+        public IObservable<TResult> FetchResults<TSource, TResult>(IQuery<TSource, TResult> query)
         {
-            query = query ?? new Query<T>();
-            var subj = new Subject<T>();
+            var subj = new Subject<TResult>();
             _subjWork.OnNext(() =>
             {
                 lock (_isProcessing) _isProcessing.OnNext(true);
                 try
                 {
-                    query.Against(GetStoreOf<T>())
+                    query.Against(GetStoreOf<TSource>())
                         .ToObservable()
                         .Finally(() =>
                         {

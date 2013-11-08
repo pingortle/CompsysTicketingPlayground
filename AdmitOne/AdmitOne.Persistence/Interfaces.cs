@@ -13,7 +13,7 @@ namespace AdmitOne.Persistence
         INotifyWhenComplete ScopedChanges();
 
         IObservable<T> FetchResults<T>();
-        IObservable<T> FetchResults<T>(IQuery<T> query);
+        IObservable<TResult> FetchResults<TSource, TResult>(IQuery<TSource, TResult> query);
         IObservable<bool> IsWorking { get; }
         IObservable<Exception> ThrownExceptions { get; }
     }
