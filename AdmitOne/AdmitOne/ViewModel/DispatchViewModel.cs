@@ -31,13 +31,13 @@ namespace AdmitOne.ViewModel
             gotFreshTickets.Subscribe(x => x.ForEach(t => Tickets.Add(t)));
 
             IEnumerable<IReactiveCommand> dataAccessCommands = new[] { getFreshTechs, getFreshTickets };
-            var masterCommand = dataAccessCommands.JoinMutuallyExclusiveAsyncCommands(new IObservable<object>[]
+            var refreshAll = dataAccessCommands.JoinMutuallyExclusiveAsyncCommands(new IObservable<object>[]
             {
                 gotFreshTechs,
                 gotFreshTickets
             });
 
-            Refresh = masterCommand;
+            Refresh = refreshAll;
 
             // This illustrates the need for a mechanism to lock down the commands which reference a context.
             // Maybe it should be a view layer ReactiveCommand implementation?
@@ -46,7 +46,7 @@ namespace AdmitOne.ViewModel
                     x => x.SelectedEmployee,
                     y => y.SelectedTicket,
                     (x, y) => x.Value != null && y.Value != null),
-                masterCommand.CanExecuteObservable,
+                refreshAll.CanExecuteObservable,
                 (x, y) => x && y));
             Assign.RegisterAsyncAction(_ =>
             {
@@ -61,7 +61,7 @@ namespace AdmitOne.ViewModel
                 .Select(x => x.Message)
                 .ToProperty(this, x => x.Error);
 
-            masterCommand.Execute(default(object));
+            refreshAll.Execute(default(object));
         }
 
         public IReactiveCollection<Employee> Techs { get; private set; }
