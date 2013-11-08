@@ -16,14 +16,12 @@ namespace AdmitOne.ViewModel
 
             Tickets = new ReactiveList<Ticket>();
 
-            var getFreshTickets = new ReactiveCommand();
-            getFreshTickets.RegisterAsyncFunction(_ => session.GetStoreOf<Ticket>().ToList())
-                .Subscribe(x => x.ForEach(t => Tickets.Add(t)));
+            _isFetchingTickets = session.IsWorking
+                .ToProperty(this, x => x.IsFetchingTickets);
 
-            _isFetchingTickets = getFreshTickets.IsExecuting
-                .ToProperty(this, x => x.IsFetchingTickets, true);
-
-            getFreshTickets.Execute(default(object));
+            session.FetchResults(new TicketQuery())
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(x => Tickets.Add(x));
         }
 
         private ObservableAsPropertyHelper<bool> _isFetchingTickets;
