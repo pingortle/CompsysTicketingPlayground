@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 
 namespace AdmitOne.Persistence
 {
@@ -9,7 +10,7 @@ namespace AdmitOne.Persistence
         IStore<T> GetStoreOf<T>();
         IEnumerable<Type> GetAvailableTypes();
 
-        IDisposable ScopedChanges();
+        INotifyWhenComplete ScopedChanges();
 
         IObservable<T> FetchResults<T>();
         IObservable<T> FetchResults<T>(IQuery<T> query);
@@ -34,5 +35,10 @@ namespace AdmitOne.Persistence
     public interface IQuery<T>
     {
         IEnumerable<T> Against(IQueryable<T> source);
+    }
+
+    public interface INotifyWhenComplete : IDisposable
+    {
+        IObservable<bool> Completion { get; }
     }
 }

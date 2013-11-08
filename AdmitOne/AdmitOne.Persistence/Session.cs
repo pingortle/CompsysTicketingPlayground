@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -83,7 +84,7 @@ namespace AdmitOne.Persistence
             return subj;
         }
 
-        public IDisposable ScopedChanges()
+        public INotifyWhenComplete ScopedChanges()
         {
             return new ScopeChanges(_context, _subjWork, _isProcessing);
         }
@@ -98,13 +99,19 @@ namespace AdmitOne.Persistence
             _workSubscription.Dispose();
         }
 
-        private sealed class ScopeChanges : IDisposable
+        private sealed class ScopeChanges : INotifyWhenComplete
         {
             public ScopeChanges(DbContext context, ISubject<Action, Action> workQueue, ISubject<bool> isProcessing)
             {
                 _context = context;
                 _workQueue = workQueue;
                 _isProcessing = isProcessing;
+                _completion = new Subject<bool>();
+            }
+
+            public IObservable<bool> Completion
+            {
+                get { return _completion; }
             }
 
             public void Dispose()
@@ -113,7 +120,17 @@ namespace AdmitOne.Persistence
                     _workQueue.OnNext(() =>
                     {
                         lock (_isProcessing) { _isProcessing.OnNext(true); }
-                        _context.SaveChanges();
+                        try
+                        {
+                            _context.SaveChanges();
+                            _completion.OnNext(true);
+                        }
+                        catch
+                        {
+                            _completion.OnNext(false);
+                        }
+
+                        _completion.OnCompleted();
                         lock (_isProcessing) { _isProcessing.OnNext(false); }
                     });
             }
@@ -121,6 +138,7 @@ namespace AdmitOne.Persistence
             private DbContext _context;
             private ISubject<Action, Action> _workQueue;
             private ISubject<bool> _isProcessing;
+            private Subject<bool> _completion;
         }
     }
 
