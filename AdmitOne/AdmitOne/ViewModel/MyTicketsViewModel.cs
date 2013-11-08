@@ -19,7 +19,7 @@ namespace AdmitOne.ViewModel
             _isFetchingTickets = session.IsWorking
                 .ToProperty(this, x => x.IsFetchingTickets);
 
-            session.FetchResults(new TicketQuery())
+            session.FetchResults(new Query<Ticket>())
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(x => Tickets.Add(x));
         }

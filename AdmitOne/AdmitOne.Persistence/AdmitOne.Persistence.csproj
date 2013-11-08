@@ -65,10 +65,10 @@
     <Compile Include="Interfaces.cs" />
     <Compile Include="NotCool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="Store.cs" />
     <Compile Include="TicketingSession.cs" />
-    <Compile Include="TicketQuery.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
