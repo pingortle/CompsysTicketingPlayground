@@ -11,6 +11,7 @@ namespace AdmitOne.Persistence
 
         IDisposable ScopedChanges();
 
+        IObservable<T> FetchResults<T>();
         IObservable<T> FetchResults<T>(IQuery<T> query);
         IObservable<bool> IsWorking { get; }
     }

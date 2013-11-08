@@ -59,8 +59,14 @@ namespace AdmitOne.Persistence
                 .SelectMany(x => x.PropertyType.GetGenericArguments());
         }
 
-        public IObservable<T> FetchResults<T>(IQuery<T> query)
+        public IObservable<T> FetchResults<T>()
         {
+            return FetchResults<T>(null);
+        }
+
+        public IObservable<T> FetchResults<T>(IQuery<T> query = null)
+        {
+            query = query ?? new Query<T>();
             var subj = new Subject<T>();
             _subjWork.OnNext(() =>
             {
