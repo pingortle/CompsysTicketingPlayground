@@ -16,21 +16,6 @@ namespace AdmitOne.Persistence
             _dbSet = _context.Set(typeof(T));
         }
 
-        private sealed class ScopeChanges : IDisposable
-        {
-            public ScopeChanges(DbContext context)
-            {
-                _context = context;
-            }
-
-            public void Dispose()
-            {
-                _context.SaveChanges();
-            }
-
-            private DbContext _context;
-        }
-
         #region IStore<>
         public void Add(T item)
         {
@@ -75,11 +60,6 @@ namespace AdmitOne.Persistence
         public IQueryProvider Provider
         {
             get { return _dbSet.AsQueryable().Provider; }
-        }
-
-        public IDisposable ScopedChanges()
-        {
-            return new ScopeChanges(_context);
         }
         #endregion
     }
