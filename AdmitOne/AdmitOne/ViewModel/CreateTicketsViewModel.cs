@@ -22,10 +22,9 @@ namespace AdmitOne.ViewModel
             #endregion
 
             #region Populate Customer List
-            var getFreshCustomers = new ReactiveCommand();
-            getFreshCustomers.RegisterAsyncFunction(_ => session.GetStoreOf<Customer>().ToList())
-                .Subscribe(x => x.ForEach(c => Customers.Add(c)));
-            getFreshCustomers.Execute(default(object));
+            session.FetchResults<Customer>()
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(c => Customers.Add(c));
             #endregion
 
             #region Wire Up Commands
@@ -46,39 +45,27 @@ namespace AdmitOne.ViewModel
 
             SaveChanges = new ReactiveCommand(shouldSaveChanges.StartWith(false));
 
-            _isExecuting = SaveChanges.IsExecuting.ToProperty(this, x => x.IsExecuting, false);
+            _isExecuting = session.IsWorking.ToProperty(this, x => x.IsExecuting, false);
 
             SaveChanges.Select(x => CurrentBatch.ToList())
-                .ObserveOn(RxApp.TaskpoolScheduler)
-                .Select(x =>
-                    {
-                        try
-                        {
-                            var tickets = session.GetStoreOf<Ticket>();
-                            using (session.ScopedChanges())
-                            {
-                                foreach (var item in x)
-                                {
-                                    tickets.Add(new Ticket
-                                    {
-                                        Description = item.Text,
-                                        CustomerId = SelectedCustomer.Id
-                                    });
-                                }
-                            }
-                        }
-                        catch
-                        {
-                            return false;
-                        }
-
-                        return true;
-                    })
-                .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(x =>
                     {
-                        if (x)
-                            (CurrentBatch as IList).Clear();
+                        var tickets = session.GetStoreOf<Ticket>();
+                        using (INotifyWhenComplete token = session.ScopedChanges())
+                        {
+                            token.Completion
+                                .ObserveOn(RxApp.MainThreadScheduler)
+                                .Subscribe(b => { if (b) (CurrentBatch as IList).Clear(); });
+
+                            foreach (var item in x)
+                            {
+                                tickets.Add(new Ticket
+                                {
+                                    Description = item.Text,
+                                    CustomerId = SelectedCustomer.Id
+                                });
+                            }
+                        }
                     });
             #endregion
         }

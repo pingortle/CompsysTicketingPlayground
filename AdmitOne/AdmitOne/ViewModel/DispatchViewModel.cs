@@ -19,36 +19,38 @@ namespace AdmitOne.ViewModel
             Tickets = new ReactiveList<Ticket>();
 
             var getFreshTechs = new ReactiveCommand();
-            getFreshTechs.ObserveOn(RxApp.MainThreadScheduler).Subscribe(_ => Techs.Clear());
-
-            var gotFreshTechs = getFreshTechs.RegisterAsyncFunction(_ => session.GetStoreOf<Employee>().ToList());
-            gotFreshTechs.Subscribe(x => x.ForEach(t => Techs.Add(t)));
+            getFreshTechs.ObserveOn(RxApp.MainThreadScheduler).Subscribe(_ =>
+                {
+                    Techs.Clear();
+                    session.FetchResults<Employee>()
+                        .ObserveOn(RxApp.MainThreadScheduler)
+                        .Subscribe(x => Techs.Add(x));
+                });
 
             var getFreshTickets = new ReactiveCommand();
-            getFreshTickets.ObserveOn(RxApp.MainThreadScheduler).Subscribe(_ => Tickets.Clear());
+            getFreshTickets.ObserveOn(RxApp.MainThreadScheduler).Subscribe(_ =>
+                {
+                    Tickets.Clear();
+                    session.FetchResults<Ticket>()
+                        .ObserveOn(RxApp.MainThreadScheduler)
+                        .Subscribe(x => Tickets.Add(x));
+                });
 
-            var gotFreshTickets = getFreshTickets.RegisterAsyncFunction(_ => session.GetStoreOf<Ticket>().ToList());
-            gotFreshTickets.Subscribe(x => x.ForEach(t => Tickets.Add(t)));
+            Refresh = new ReactiveCommand(session.IsWorking.Select(x => !x));
+            Refresh.Subscribe(_ =>
+                {
+                    getFreshTechs.Execute(default(object));
+                    getFreshTickets.Execute(default(object));
+                });
 
-            IEnumerable<IReactiveCommand> dataAccessCommands = new[] { getFreshTechs, getFreshTickets };
-            var refreshAll = dataAccessCommands.JoinMutuallyExclusiveAsyncCommands(new IObservable<object>[]
-            {
-                gotFreshTechs,
-                gotFreshTickets
-            });
-
-            Refresh = refreshAll;
-
-            // This illustrates the need for a mechanism to lock down the commands which reference a context.
-            // Maybe it should be a view layer ReactiveCommand implementation?
             Assign = new ReactiveCommand(Observable.CombineLatest(
                 this.WhenAny(
                     x => x.SelectedEmployee,
                     y => y.SelectedTicket,
                     (x, y) => x.Value != null && y.Value != null),
-                refreshAll.CanExecuteObservable,
+                Refresh.CanExecuteObservable,
                 (x, y) => x && y));
-            Assign.RegisterAsyncAction(_ =>
+            Assign.Subscribe(_ =>
             {
                 var events = session.GetStoreOf<TicketEvent>();
                 using (session.ScopedChanges())
@@ -57,11 +59,7 @@ namespace AdmitOne.ViewModel
                 }
             });
 
-            _error = Observable.Merge(dataAccessCommands.Select(x => x.ThrownExceptions))
-                .Select(x => x.Message)
-                .ToProperty(this, x => x.Error);
-
-            refreshAll.Execute(default(object));
+            Refresh.Execute(default(object));
         }
 
         public IReactiveCollection<Employee> Techs { get; private set; }

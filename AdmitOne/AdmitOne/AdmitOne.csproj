@@ -97,7 +97,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AsyncDataMixins.cs" />
     <Compile Include="ViewModel\DispatchViewModel.cs" />
     <Compile Include="ViewModel\MyTicketsViewModel.cs" />
     <Compile Include="ViewModel\TicketItemViewModel.cs" />
