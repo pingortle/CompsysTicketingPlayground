@@ -50,9 +50,9 @@ namespace AdmitOne.ViewModel
             SaveChanges.Select(x => CurrentBatch.ToList())
                 .Subscribe(x =>
                     {
-                        var ticketTaker = session.Take<Ticket>();
                         using (INotifyWhenComplete token = session.ScopedChanges())
                         {
+                            var ticketTaker = session.Take<Ticket>();
                             token.Completion
                                 .ObserveOn(RxApp.MainThreadScheduler)
                                 .Subscribe(b => { if (b) (CurrentBatch as IList).Clear(); });
