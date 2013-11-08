@@ -7,7 +7,8 @@ namespace AdmitOne.Persistence
 {
     public interface ISession : IDisposable
     {
-        IStore<T> GetStoreOf<T>();
+        ITake<T> Take<T>();
+
         IEnumerable<Type> GetAvailableTypes();
 
         INotifyWhenComplete ScopedChanges();

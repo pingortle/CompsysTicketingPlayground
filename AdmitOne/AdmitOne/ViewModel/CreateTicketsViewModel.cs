@@ -50,7 +50,7 @@ namespace AdmitOne.ViewModel
             SaveChanges.Select(x => CurrentBatch.ToList())
                 .Subscribe(x =>
                     {
-                        var tickets = session.GetStoreOf<Ticket>();
+                        var ticketTaker = session.Take<Ticket>();
                         using (INotifyWhenComplete token = session.ScopedChanges())
                         {
                             token.Completion
@@ -59,7 +59,7 @@ namespace AdmitOne.ViewModel
 
                             foreach (var item in x)
                             {
-                                tickets.Add(new Ticket
+                                ticketTaker.Add(new Ticket
                                 {
                                     Description = item.Text,
                                     CustomerId = SelectedCustomer.Id

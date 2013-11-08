@@ -52,10 +52,10 @@ namespace AdmitOne.ViewModel
                 (x, y) => x && y));
             Assign.Subscribe(_ =>
             {
-                var events = session.GetStoreOf<TicketEvent>();
+                var eventTaker = session.Take<TicketEvent>();
                 using (session.ScopedChanges())
                 {
-                    events.Add(new TicketEvent { Employee = SelectedEmployee, Ticket = SelectedTicket, TicketStatus = TicketStatus.Assigned, Time = DateTime.Now });
+                    eventTaker.Add(new TicketEvent { Employee = SelectedEmployee, Ticket = SelectedTicket, TicketStatus = TicketStatus.Assigned, Time = DateTime.Now });
                 }
             });
 

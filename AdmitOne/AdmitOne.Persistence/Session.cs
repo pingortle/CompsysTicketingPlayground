@@ -34,7 +34,12 @@ namespace AdmitOne.Persistence
             ThrownExceptions = _exceptions = new Subject<Exception>();
         }
 
-        public IStore<TStore> GetStoreOf<TStore>()
+        public ITake<TStore> Take<TStore>()
+        {
+            return new Store<TStore>(_context);
+        }
+
+        private ISee<TStore> LookAt<TStore>()
         {
             return new Store<TStore>(_context);
         }
@@ -76,7 +81,7 @@ namespace AdmitOne.Persistence
                 lock (_isProcessing) _isProcessing.OnNext(true);
                 try
                 {
-                    query.Against(GetStoreOf<TSource>())
+                    query.Against(LookAt<TSource>())
                         .ToObservable()
                         .Finally(() =>
                         {
