@@ -12,7 +12,7 @@ namespace AdmitOne.Persistence
         IDisposable ScopedChanges();
 
         IObservable<T> FetchResults<T>(IQuery<T> query);
-        IObservable<bool> IsFetchingResults { get; }
+        IObservable<bool> IsWorking { get; }
     }
 
     public interface ISee<out T> : IQueryable<T>, IEnumerable<T> { }
@@ -32,8 +32,6 @@ namespace AdmitOne.Persistence
 
     public interface IQuery<T>
     {
-        IQueryable<T> Queryable { get; }
-
         IQuery<T> With(IQuery<T> query);
 
         IEnumerable<T> Against(IQueryable<T> source);
