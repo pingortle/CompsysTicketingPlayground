@@ -37,10 +37,13 @@ namespace AdmitOne.Persistence
     public interface IQuery<in TSource, out TResult>
     {
         IEnumerable<TResult> Against(IQueryable<TSource> source);
+        IQuery<TSource, T> With<T>(Func<IQueryable<TResult>, IQueryable<T>> query);
     }
 
     public interface IQuery<T> : IQuery<T, T>
-    {}
+    {
+        IQuery<T> With(Func<IQueryable<T>, IQueryable<T>> query);
+    }
 
     public interface INotifyWhenComplete : IDisposable
     {

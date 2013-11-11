@@ -18,6 +18,11 @@ namespace AdmitOne.Persistence
             return _applyQuery(source).ToList();
         }
 
+        public IQuery<TSource, TOut> With<TOut>(Func<IQueryable<TResult>, IQueryable<TOut>> query)
+        {
+            return new MappingQuery<TSource, TOut>(x => query(_applyQuery(x)));
+        }
+
         private Func<IQueryable<TSource>, IQueryable<TResult>> _applyQuery;
     }
 
@@ -31,6 +36,16 @@ namespace AdmitOne.Persistence
         public IEnumerable<T> Against(IQueryable<T> source)
         {
             return _applyQuery(source).ToList();
+        }
+
+        public IQuery<T, TOut> With<TOut>(Func<IQueryable<T>, IQueryable<TOut>> query)
+        {
+            return new MappingQuery<T, TOut>(x => query(_applyQuery(x)));
+        }
+
+        public IQuery<T> With(Func<IQueryable<T>, IQueryable<T>> query)
+        {
+            return new Query<T>(x => query(_applyQuery(x)));
         }
 
         private Func<IQueryable<T>, IQueryable<T>> _applyQuery;
