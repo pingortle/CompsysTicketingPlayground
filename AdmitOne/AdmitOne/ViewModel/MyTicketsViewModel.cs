@@ -1,4 +1,5 @@
-﻿using AdmitOne.Domain.Entities;
+﻿using AdmitOne.Domain;
+using AdmitOne.Domain.Entities;
 using AdmitOne.Persistence;
 using ReactiveUI;
 using System;
@@ -25,15 +26,26 @@ namespace AdmitOne.ViewModel
                 .Subscribe(x =>
                     {
                         Tickets.Clear();
-                        (x.Id == int.MinValue ? session.FetchResults<Ticket>() :
                         session.FetchResults(
-                        new Query<Ticket>(q =>
+                        new Query<Ticket, TicketWithLatestEvent>(q =>
                             (from t in q
-                             where t.TicketEvents
-                                .OrderByDescending(e => e.Time)
-                                .FirstOrDefault().Employee.Id == x.Id
-                             select t))))
+                             join e in q.SelectMany(y =>
+                                 y.TicketEvents
+                                    .OrderByDescending(ev => ev.Time)
+                                    .Take(1))
+                             on t.Id equals e.TicketId
+                             where e.EmployeeId == x.Id || x.Id == int.MinValue
+                             select new TicketWithLatestEvent
+                             {
+                                 Description = t.Description,
+                                 CustomerId = t.CustomerId,
+                                 EmployeeId = e.EmployeeId,
+                                 TicketId = t.Id,
+                                 TicketStatus = e.TicketStatus,
+                                 Time = e.Time
+                             })))
                              .ObserveOn(RxApp.MainThreadScheduler)
+                             .Select(y => new Ticket { Description = y.Description })
                              .Subscribe(y => Tickets.Add(y));
                     });
 
