@@ -1,9 +1,9 @@
 ﻿using AdmitOne.Domain;
 using AdmitOne.Persistence;
 using ReactiveUI;
+using System;
 using System.Linq;
 using System.Reactive.Linq;
-using System;
 
 namespace AdmitOne.ViewModel
 {
@@ -25,16 +25,20 @@ namespace AdmitOne.ViewModel
                 .Subscribe(x =>
                     {
                         Tickets.Clear();
+                        (x.Id == int.MinValue ? session.FetchResults<Ticket>() :
                         session.FetchResults(
                         new Query<Ticket>(q =>
                             (from t in q
                              where t.TicketEvents
                                 .OrderByDescending(e => e.Time)
                                 .FirstOrDefault().Employee.Id == x.Id
-                             select t)))
+                             select t))))
                              .ObserveOn(RxApp.MainThreadScheduler)
                              .Subscribe(y => Tickets.Add(y));
                     });
+
+            SelectedEmployee = new Employee { Name = "All", TicketEvents = null, Id = int.MinValue };
+            Employees.Add(SelectedEmployee);
 
             session.FetchResults<Employee>()
                 .ObserveOn(RxApp.MainThreadScheduler)
