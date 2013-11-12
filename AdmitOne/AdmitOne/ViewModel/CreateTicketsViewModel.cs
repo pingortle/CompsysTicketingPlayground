@@ -32,7 +32,11 @@ namespace AdmitOne.ViewModel
                 this.WhenAny(
                 x => x.CurrentBatch,
                 y => y.TicketText,
-                (x, y) => x.Value.Count() <= 100 && !string.IsNullOrWhiteSpace(y.Value)));
+                z => z.SelectedCustomer,
+                (x, y, z) => x.Value.Count() <= 100 &&
+                    !string.IsNullOrWhiteSpace(y.Value) &&
+                    z.Value != null));
+
             AddTicket.Subscribe(_ =>
                 {
                     CurrentBatch.Add(new TicketItemViewModel(TicketText, CurrentBatch.Remove));
