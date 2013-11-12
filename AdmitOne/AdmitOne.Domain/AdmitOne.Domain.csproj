@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTransferObjects.cs" />
     <Compile Include="Entities\Entities.cs" />
     <Compile Include="Entities\Interfaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
