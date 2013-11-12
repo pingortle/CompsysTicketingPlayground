@@ -15,19 +15,49 @@ namespace AdmitOne.ViewModel
             GoBack = HostScreen.Router.NavigateBack;
 
             Tickets = new ReactiveList<Ticket>();
+            Employees = new ReactiveList<Employee>();
 
             _isFetchingTickets = session.IsWorking
                 .ToProperty(this, x => x.IsFetchingTickets);
 
-            session.FetchResults(new Query<Ticket>())
+            this.WhenAnyValue(x => x.SelectedEmployee)
+                .Where(x => x != null)
+                .Subscribe(x =>
+                    {
+                        Tickets.Clear();
+                        session.FetchResults(
+                        new Query<Ticket>(q =>
+                            (from t in q
+                             where t.TicketEvents
+                                .OrderByDescending(e => e.Time)
+                                .FirstOrDefault().Employee.Id == x.Id
+                             select t)))
+                             .ObserveOn(RxApp.MainThreadScheduler)
+                             .Subscribe(y => Tickets.Add(y));
+                    });
+
+            session.FetchResults<Employee>()
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .Subscribe(x => Tickets.Add(x));
+                .Subscribe(x => Employees.Add(x));
+
+            session.ThrownExceptions.Subscribe(x =>
+                {
+                    Console.WriteLine(x.Message);
+                });
         }
 
         private ObservableAsPropertyHelper<bool> _isFetchingTickets;
         public bool IsFetchingTickets { get { return _isFetchingTickets.Value; } }
 
         public IReactiveCollection<Ticket> Tickets { get; set; }
+        public IReactiveCollection<Employee> Employees { get; set; }
+
+        private Employee _selectedEmployee;
+        public Employee SelectedEmployee
+        {
+            get { return _selectedEmployee; }
+            set { this.RaiseAndSetIfChanged(ref _selectedEmployee, value); }
+        }
 
         public IReactiveCommand GoBack { get; private set; }
 

@@ -11,6 +11,13 @@
     </UserControl.Resources>
     <DockPanel>
         <Button DockPanel.Dock="Top" HorizontalAlignment="Left" Command="{Binding GoBack}">Back</Button>
+        <ComboBox DockPanel.Dock="Bottom" ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <ProgressBar Height="10" DockPanel.Dock="Bottom" Visibility="{Binding IsFetchingTickets, Converter={StaticResource BoolToVis}}" IsIndeterminate="True" />
         <ListView ItemsSource="{Binding Tickets}">
             <ListView.ItemTemplate>
