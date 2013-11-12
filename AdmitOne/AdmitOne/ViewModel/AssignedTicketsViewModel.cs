@@ -15,7 +15,7 @@ namespace AdmitOne.ViewModel
             HostScreen = screen;
             GoBack = HostScreen.Router.NavigateBack;
 
-            Tickets = new ReactiveList<Ticket>();
+            Tickets = new ReactiveList<TicketItemViewModel>();
             Employees = new ReactiveList<Employee>();
 
             _isFetchingTickets = session.IsWorking
@@ -45,7 +45,7 @@ namespace AdmitOne.ViewModel
                                  Time = e.Time
                              })))
                              .ObserveOn(RxApp.MainThreadScheduler)
-                             .Select(y => new Ticket { Description = y.Description })
+                             .Select(y => new TicketItemViewModel(y.Description, y.TicketStatus ?? TicketStatus.Open))
                              .Subscribe(y => Tickets.Add(y));
                     });
 
@@ -65,7 +65,7 @@ namespace AdmitOne.ViewModel
         private ObservableAsPropertyHelper<bool> _isFetchingTickets;
         public bool IsFetchingTickets { get { return _isFetchingTickets.Value; } }
 
-        public IReactiveCollection<Ticket> Tickets { get; set; }
+        public IReactiveCollection<TicketItemViewModel> Tickets { get; set; }
         public IReactiveCollection<Employee> Employees { get; set; }
 
         private Employee _selectedEmployee;
