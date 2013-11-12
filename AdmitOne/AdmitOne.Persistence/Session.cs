@@ -18,9 +18,10 @@ namespace AdmitOne.Persistence
         private ISubject<Action, Action> _subjWork = Subject.Synchronize(new Subject<Action>());
         private ISubject<Exception> _exceptions;
 
-        internal Session(DbContext context)
+        internal Session(DbContext context, Action<string> logger = null)
         {
             _context = context;
+            _context.Database.Log = logger ?? (x => System.Diagnostics.Debug.WriteLine(x));
 
             _workSubscription = _subjWork
                 .ObserveOn(TaskPoolScheduler.Default)
