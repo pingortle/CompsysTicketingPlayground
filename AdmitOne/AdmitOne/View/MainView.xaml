@@ -23,7 +23,7 @@
             </Grid.RowDefinitions>
             <WrapPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
                 <Button MinWidth="100" Height="100" Command="{Binding NavigateToDispatch}">Dispatch</Button>
-                <Button MinWidth="100" Height="100" Command="{Binding NavigateToMyTickets}">My Tickets</Button>
+                <Button MinWidth="100" Height="100" Command="{Binding NavigateToMyTickets}">Assigned Tickets</Button>
                 <Button MinWidth="100" Height="100">Manage</Button>
                 <Button MinWidth="100" Height="100" Command="{Binding NavigateToCreateTickets}">Create Tickets</Button>
                 <Button MinWidth="100" Height="100">My Stats</Button>

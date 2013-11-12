@@ -34,7 +34,7 @@ namespace AdmitOne
             kernel.Bind<IViewFor<MainViewModel>>().To<MainView>();
             kernel.Bind<IViewFor<CreateTicketsViewModel>>().To<CreateTicketsView>();
             kernel.Bind<IViewFor<DispatchViewModel>>().To<DispatchView>();
-            kernel.Bind<IViewFor<MyTicketsViewModel>>().To<MyTicketsView>();
+            kernel.Bind<IViewFor<AssignedTicketsViewModel>>().To<AssignedTicketsView>();
 
             // Persistence
             kernel.Bind<ISession>().To<TicketingSession>().InParentScope();

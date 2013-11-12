@@ -8,9 +8,9 @@ using System.Reactive.Linq;
 
 namespace AdmitOne.ViewModel
 {
-    public sealed class MyTicketsViewModel : ReactiveObject, IRoutableViewModel
+    public sealed class AssignedTicketsViewModel : ReactiveObject, IRoutableViewModel
     {
-        public MyTicketsViewModel(IScreen screen, ISession session)
+        public AssignedTicketsViewModel(IScreen screen, ISession session)
         {
             HostScreen = screen;
             GoBack = HostScreen.Router.NavigateBack;

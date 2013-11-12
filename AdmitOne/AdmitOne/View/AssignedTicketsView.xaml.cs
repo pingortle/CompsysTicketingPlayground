@@ -6,28 +6,28 @@ using System.Windows.Controls;
 namespace AdmitOne.View
 {
     /// <summary>
-    /// Interaction logic for MyTicketsView.xaml
+    /// Interaction logic for AssignedTicketsView.xaml
     /// </summary>
-    public partial class MyTicketsView : UserControl, IViewFor<MyTicketsViewModel>
+    public partial class AssignedTicketsView : UserControl, IViewFor<AssignedTicketsViewModel>
     {
-        public MyTicketsView()
+        public AssignedTicketsView()
         {
             InitializeComponent();
         }
 
         #region IViewFor Boilerplate
         private static DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(MyTicketsViewModel), typeof(MyTicketsView), new PropertyMetadata(null));
-        public MyTicketsViewModel ViewModel
+            DependencyProperty.Register("ViewModel", typeof(AssignedTicketsViewModel), typeof(AssignedTicketsView), new PropertyMetadata(null));
+        public AssignedTicketsViewModel ViewModel
         {
-            get { return (MyTicketsViewModel)GetValue(ViewModelProperty); }
+            get { return (AssignedTicketsViewModel)GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
         }
 
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (MyTicketsViewModel)value; }
+            set { ViewModel = (AssignedTicketsViewModel)value; }
         }
         #endregion
         

@@ -10,7 +10,7 @@ namespace AdmitOne.ViewModel
 
             NavigateToCreateTickets = screen.Router.NavigateCommandFor<CreateTicketsViewModel>();
             NavigateToDispatch = screen.Router.NavigateCommandFor<DispatchViewModel>();
-            NavigateToMyTickets = HostScreen.Router.NavigateCommandFor<MyTicketsViewModel>();
+            NavigateToMyTickets = HostScreen.Router.NavigateCommandFor<AssignedTicketsViewModel>();
         }
 
         public IReactiveCommand NavigateToCreateTickets { get; private set; }
