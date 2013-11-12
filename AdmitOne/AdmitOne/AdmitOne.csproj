@@ -103,6 +103,7 @@
     <Compile Include="View\DispatchView.xaml.cs">
       <DependentUpon>DispatchView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\EnumDisplayer.cs" />
     <Compile Include="View\MarginSetter.cs" />
     <Compile Include="View\AssignedTicketsView.xaml.cs">
       <DependentUpon>AssignedTicketsView.xaml</DependentUpon>
