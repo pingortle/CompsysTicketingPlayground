@@ -6,48 +6,37 @@ using System.Threading.Tasks;
 
 namespace AdmitOne.Persistence
 {
-    public class MappingQuery<TSource, TResult> : IQuery<TSource, TResult>
+    public class Query<TSource, TResult> : IQuery<TSource, TResult>
     {
-        public MappingQuery(Func<IQueryable<TSource>, IQueryable<TResult>> applyQuery)
+        public Query(Func<IQueryable<TSource>, IQueryable<TResult>> applyQuery)
         {
-            _applyQuery = applyQuery;
+            ApplyQuery = applyQuery ?? (x => { throw new InvalidOperationException("Query must have a query function."); });
         }
 
         public IEnumerable<TResult> Against(IQueryable<TSource> source)
         {
-            return _applyQuery(source).ToList();
+            return ApplyQuery(source).ToList();
         }
 
         public IQuery<TSource, TOut> With<TOut>(Func<IQueryable<TResult>, IQueryable<TOut>> query)
         {
-            return new MappingQuery<TSource, TOut>(x => query(_applyQuery(x)));
+            return new Query<TSource, TOut>(x => query(ApplyQuery(x)));
         }
 
-        private Func<IQueryable<TSource>, IQueryable<TResult>> _applyQuery;
+        protected Func<IQueryable<TSource>, IQueryable<TResult>> ApplyQuery;
     }
 
-    public class Query<T> : IQuery<T>
+    public class Query<T> : Query<T, T>, IQuery<T>
     {
         public Query(Func<IQueryable<T>, IQueryable<T>> applyQuery = null)
+            : base(null)
         {
-            _applyQuery = applyQuery ?? (q => q);
-        }
-
-        public IEnumerable<T> Against(IQueryable<T> source)
-        {
-            return _applyQuery(source).ToList();
-        }
-
-        public IQuery<T, TOut> With<TOut>(Func<IQueryable<T>, IQueryable<TOut>> query)
-        {
-            return new MappingQuery<T, TOut>(x => query(_applyQuery(x)));
+            ApplyQuery = applyQuery ?? (q => q);
         }
 
         public IQuery<T> With(Func<IQueryable<T>, IQueryable<T>> query)
         {
-            return new Query<T>(x => query(_applyQuery(x)));
+            return new Query<T>(x => query(ApplyQuery(x)));
         }
-
-        private Func<IQueryable<T>, IQueryable<T>> _applyQuery;
     }
 }
