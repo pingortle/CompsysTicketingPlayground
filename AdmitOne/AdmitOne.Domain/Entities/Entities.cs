@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AdmitOne.Domain
+namespace AdmitOne.Domain.Entities
 {
     public enum TicketStatus { Open, Closed, Assigned }
 

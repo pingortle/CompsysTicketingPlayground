@@ -1,4 +1,4 @@
-﻿using AdmitOne.Domain;
+﻿using AdmitOne.Domain.Entities;
 using AdmitOne.Persistence;
 using ReactiveUI;
 using System;
