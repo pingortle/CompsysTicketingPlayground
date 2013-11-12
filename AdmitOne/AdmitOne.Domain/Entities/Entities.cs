@@ -5,7 +5,7 @@ namespace AdmitOne.Domain.Entities
 {
     public enum TicketStatus { Open, Closed, Assigned }
 
-    public class Customer
+    public class Customer : ICustomer
     {
         public int Id { get; set; }
 
@@ -16,7 +16,7 @@ namespace AdmitOne.Domain.Entities
         public virtual List<Ticket> Tickets { get; set; }
     }
 
-    public class Employee
+    public class Employee : IEmployee
     {
         public int Id { get; set; }
 
@@ -25,7 +25,7 @@ namespace AdmitOne.Domain.Entities
         public virtual List<TicketEvent> TicketEvents { get; set; }
     }
 
-    public class Ticket
+    public class Ticket : ITicket
     {
         public int Id { get; set; }
 
@@ -37,7 +37,7 @@ namespace AdmitOne.Domain.Entities
         public virtual List<TicketEvent> TicketEvents { get; set; }
     }
 
-    public class TicketEvent
+    public class TicketEvent : ITicketEvent
     {
         public int Id { get; set; }
 
