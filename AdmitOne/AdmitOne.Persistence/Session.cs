@@ -113,6 +113,7 @@ namespace AdmitOne.Persistence
                 _context.Dispose();
 
             _workSubscription.Dispose();
+            _isProcessing.Dispose();
         }
 
         private sealed class ScopeChanges : INotifyWhenComplete
@@ -149,6 +150,7 @@ namespace AdmitOne.Persistence
                         }
 
                         _completion.OnCompleted();
+                        _completion.Dispose();
                         lock (_isProcessing) { _isProcessing.OnNext(false); }
                     });
             }
