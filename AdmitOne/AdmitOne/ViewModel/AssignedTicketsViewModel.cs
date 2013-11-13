@@ -26,24 +26,24 @@ namespace AdmitOne.ViewModel
                 .Subscribe(x =>
                     {
                         Tickets.Clear();
-                        session.FetchResults(
-                        new Query<Ticket, TicketWithLatestEvent>(q =>
-                            (from t in q
-                             join e in q.SelectMany(y =>
-                                 y.TicketEvents
-                                    .OrderByDescending(ev => ev.Time)
-                                    .Take(1))
-                             on t.Id equals e.TicketId
-                             where e.EmployeeId == x.Id || x.Id == int.MinValue
-                             select new TicketWithLatestEvent
-                             {
-                                 Description = t.Description,
-                                 CustomerId = t.CustomerId,
-                                 EmployeeId = e.EmployeeId,
-                                 TicketId = t.Id,
-                                 TicketStatus = e.TicketStatus,
-                                 Time = e.Time
-                             })))
+
+                        session.FetchMergedResults<Ticket, TicketEvent, TicketWithLatestEvent>((tickets, events) =>
+                            from t in tickets
+                            join e in events
+                                .GroupBy(y => y.TicketId)
+                                .SelectMany(g =>
+                                    g.OrderByDescending(y => y.Time).Take(1))
+                            on t.Id equals e.TicketId
+                            orderby e.Time descending
+                            select new TicketWithLatestEvent
+                            {
+                                Description = t.Description,
+                                CustomerId = t.CustomerId,
+                                EmployeeId = e.EmployeeId,
+                                TicketId = t.Id,
+                                TicketStatus = e.TicketStatus,
+                                Time = e.Time
+                            })
                              .ObserveOn(RxApp.MainThreadScheduler)
                              .Select(y => new TicketItemViewModel(y.Description, y.TicketStatus ?? TicketStatus.Open))
                              .Subscribe(y => Tickets.Add(y));
