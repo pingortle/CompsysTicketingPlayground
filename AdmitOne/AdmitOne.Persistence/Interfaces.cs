@@ -15,6 +15,14 @@ namespace AdmitOne.Persistence
 
         IObservable<T> FetchResults<T>();
         IObservable<TResult> FetchResults<TSource, TResult>(IQuery<TSource, TResult> query);
+
+        IObservable<T> FetchMergedResults<TSource1, TSource2, TResult, T>(
+            Func<IQueryable<TSource1>, IQueryable<TSource2>,
+            IQueryable<TResult>> mergeStrategy, IQuery<TResult, T> query);
+        IObservable<TResult> FetchMergedResults<TSource1, TSource2, TResult>(
+            Func<IQueryable<TSource1>, IQueryable<TSource2>,
+            IQueryable<TResult>> mergeStrategy);
+
         IObservable<bool> IsWorking { get; }
         IObservable<Exception> ThrownExceptions { get; }
     }

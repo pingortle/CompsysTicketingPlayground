@@ -69,6 +69,16 @@ namespace AdmitOne.Persistence
                 .SelectMany(x => x.PropertyType.GetGenericArguments());
         }
 
+        public IObservable<TResult> FetchMergedResults<TSource1, TSource2, TResult>(Func<IQueryable<TSource1>, IQueryable<TSource2>, IQueryable<TResult>> mergeStrategy)
+        {
+            return FetchMergedResults(mergeStrategy, new Query<TResult>());
+        }
+
+        public IObservable<T> FetchMergedResults<TSource1, TSource2, TResult, T>(Func<IQueryable<TSource1>, IQueryable<TSource2>, IQueryable<TResult>> mergeStrategy, IQuery<TResult, T> query)
+        {
+            return FetchResults(query, () => mergeStrategy(LookAt<TSource1>(), LookAt<TSource2>()));
+        }
+
         public IObservable<T> FetchResults<T>()
         {
             return FetchResults<T, T>(new Query<T>());
@@ -76,13 +86,18 @@ namespace AdmitOne.Persistence
 
         public IObservable<TResult> FetchResults<TSource, TResult>(IQuery<TSource, TResult> query)
         {
+            return FetchResults(query, LookAt<TSource>);
+        }
+
+        private IObservable<TResult> FetchResults<TSource, TResult>(IQuery<TSource, TResult> query, Func<IQueryable<TSource>> querySource)
+        {
             var subj = new Subject<TResult>();
             _subjWork.OnNext(() =>
             {
                 lock (_isProcessing) _isProcessing.OnNext(true);
                 try
                 {
-                    query.Against(LookAt<TSource>())
+                    query.Against(querySource())
                         .ToObservable()
                         .Subscribe(subj);
                 }
