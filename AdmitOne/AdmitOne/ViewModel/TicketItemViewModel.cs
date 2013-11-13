@@ -6,21 +6,21 @@ namespace AdmitOne.ViewModel
 {
     public class TicketItemViewModel: ReactiveObject
     {
-        public TicketItemViewModel(string text, Action<object> removeAction)
-            : this(text, TicketStatus.Open, removeAction)
+        public TicketItemViewModel(string description, Action<object> removeAction)
+            : this(description, TicketStatus.Open, removeAction)
         { }
 
-        public TicketItemViewModel(string text, TicketStatus status = TicketStatus.Open, Action<object> removeAction = null)
+        public TicketItemViewModel(string description, TicketStatus status = TicketStatus.Open, Action<object> removeAction = null)
         {
             removeAction = removeAction ?? (x => Console.WriteLine("NoOp."));
-            Text = text;
+            Description = description;
             Status = status;
 
             RemoveItem = new ReactiveCommand();
             RemoveItem.Subscribe(removeAction);
         }
 
-        public string Text { get; private set; }
+        public string Description { get; private set; }
 
         private TicketStatus _status;
         public TicketStatus Status

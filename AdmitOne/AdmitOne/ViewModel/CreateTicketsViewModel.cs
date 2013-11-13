@@ -65,7 +65,7 @@ namespace AdmitOne.ViewModel
                             {
                                 ticketTaker.Add(new Ticket
                                 {
-                                    Description = item.Text,
+                                    Description = item.Description,
                                     CustomerId = SelectedCustomer.Id
                                 });
                             }
