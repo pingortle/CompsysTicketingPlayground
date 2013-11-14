@@ -24,10 +24,8 @@ namespace AdmitOne.Persistence.Ticketing
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            // Make all table names singular by default.
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            // Make all string columns required by default.
             modelBuilder.Properties<string>()
                 .Configure(x => x.IsRequired());
 
