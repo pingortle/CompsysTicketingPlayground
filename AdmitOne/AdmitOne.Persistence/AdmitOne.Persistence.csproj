@@ -68,7 +68,7 @@
     <Compile Include="Query.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="Store.cs" />
-    <Compile Include="TicketingSession.cs" />
+    <Compile Include="Ticketing\TicketingSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

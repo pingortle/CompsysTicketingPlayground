@@ -3,7 +3,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
-namespace AdmitOne.Persistence
+namespace AdmitOne.Persistence.Ticketing
 {
     public class TicketingSession : Session
     {

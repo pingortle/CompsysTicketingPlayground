@@ -1,4 +1,5 @@
 ﻿using AdmitOne.Persistence;
+using AdmitOne.Persistence.Ticketing;
 using AdmitOne.View;
 using AdmitOne.ViewModel;
 using Ninject;
