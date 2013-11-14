@@ -50,7 +50,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <Button Command="{Binding RemoveItem}" CommandParameter="{Binding}">X</Button>
-                        <TextBlock Margin="2" Text="{Binding Text}" />
+                        <TextBlock Margin="2" Text="{Binding Description}" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
