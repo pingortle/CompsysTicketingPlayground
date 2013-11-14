@@ -1,11 +1,18 @@
 ﻿using AdmitOne.Domain;
 using AdmitOne.Domain.Entities;
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace AdmitOne.Persistence.Ticketing
 {
     public static class QueryHelper
     {
+        public static IQuery<T> Filter<T>(Expression<Func<T, bool>> expression)
+        {
+            return new Query<T>(x => x.Where(expression));
+        }
+
         public static readonly QueryableFunc<Ticket, TicketEvent, TicketWithEvent>
             QueryOnTicketsAndEvents = ((tickets, events) =>
                 from t in tickets

@@ -28,7 +28,9 @@ namespace AdmitOne.ViewModel
                     {
                         Tickets.Clear();
 
-                        session.FetchMergedResults(QueryHelper.QueryOnTicketsAndEvents)
+                        session.FetchMergedResults(
+                            QueryHelper.QueryOnTicketsAndEvents,
+                            QueryHelper.Filter<TicketWithEvent>(z => x.Id == int.MinValue || z.EmployeeId == x.Id ))
                              .ObserveOn(RxApp.MainThreadScheduler)
                              .Select(y => new TicketItemViewModel(y.Description, y.TicketStatus ?? TicketStatus.Open))
                              .Subscribe(y => Tickets.Add(y));
