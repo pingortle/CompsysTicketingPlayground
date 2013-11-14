@@ -27,7 +27,7 @@ namespace AdmitOne.ViewModel
                     {
                         Tickets.Clear();
 
-                        session.FetchMergedResults<Ticket, TicketEvent, TicketWithLatestEvent>((tickets, events) =>
+                        session.FetchMergedResults<Ticket, TicketEvent, TicketWithEvent>((tickets, events) =>
                             from t in tickets
                             join e in events
                                 .GroupBy(y => y.TicketId)
@@ -35,7 +35,7 @@ namespace AdmitOne.ViewModel
                                     g.OrderByDescending(y => y.Time).Take(1))
                             on t.Id equals e.TicketId
                             orderby e.Time descending
-                            select new TicketWithLatestEvent
+                            select new TicketWithEvent
                             {
                                 Description = t.Description,
                                 CustomerId = t.CustomerId,

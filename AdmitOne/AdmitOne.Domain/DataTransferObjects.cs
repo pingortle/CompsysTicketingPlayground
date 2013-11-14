@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AdmitOne.Domain
 {
-    public class TicketWithLatestEvent : ITicket, ITicketEvent
+    public class TicketWithEvent : ITicket, ITicketEvent
     {
         #region Generated Code
         public string Description
