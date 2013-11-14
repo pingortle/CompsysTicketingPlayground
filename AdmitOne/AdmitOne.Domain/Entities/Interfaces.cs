@@ -13,15 +13,11 @@ namespace AdmitOne.Domain.Entities
         string BusinessName { get; }
         string ContactName { get; }
         string Phone { get; }
-
-        List<Ticket> Tickets { get; }
     }
 
     public interface IEmployee : IEntity
     {
         string Name { get;}
-
-        List<TicketEvent> TicketEvents { get; }
     }
 
     public interface ITicket : IEntity
@@ -29,9 +25,6 @@ namespace AdmitOne.Domain.Entities
         string Description { get; }
 
         int CustomerId { get; }
-        Customer Customer { get; }
-
-        List<TicketEvent> TicketEvents { get; }
     }
 
     public interface ITicketEvent : IEntity
@@ -40,9 +33,7 @@ namespace AdmitOne.Domain.Entities
         DateTime Time { get; }
 
         int EmployeeId { get; }
-        Employee Employee { get; }
 
         int TicketId { get; }
-        Ticket Ticket { get; }
     }
 }

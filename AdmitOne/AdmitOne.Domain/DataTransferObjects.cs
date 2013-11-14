@@ -17,16 +17,6 @@ namespace AdmitOne.Domain
             get; set;
         }
 
-        public Customer Customer
-        {
-            get; set;
-        }
-
-        public List<TicketEvent> TicketEvents
-        {
-            get; set;
-        }
-
         public int Id
         {
             get; set;
@@ -47,17 +37,7 @@ namespace AdmitOne.Domain
             get; set;
         }
 
-        public Employee Employee
-        {
-            get; set;
-        }
-
         public int TicketId
-        {
-            get; set;
-        }
-
-        public Ticket Ticket
         {
             get; set;
         }
