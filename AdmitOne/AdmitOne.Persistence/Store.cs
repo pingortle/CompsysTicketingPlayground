@@ -39,7 +39,7 @@ namespace AdmitOne.Persistence
 
         public IEnumerator<T> GetEnumerator()
         {
-            return _dbSet.AsQueryable().Cast<T>().GetEnumerator();
+            return (IEnumerator<T>)_dbSet.AsQueryable().GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
