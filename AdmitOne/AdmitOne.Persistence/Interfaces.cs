@@ -5,6 +5,10 @@ using System.Reactive;
 
 namespace AdmitOne.Persistence
 {
+    public delegate IQueryable<TResult> QueryableFunc<in TSource1, in TSource2, out TResult>(IQueryable<TSource1> queryable1, IQueryable<TSource2> queryable2);
+    public delegate IQueryable<TResult> QueryableFunc<in TSource, out TResult>(IQueryable<TSource> queryable);
+    public delegate IQueryable<TResult> QueryableFunc<out TResult>();
+
     public interface ISession : IDisposable
     {
         ITake<T> Take<T>();
@@ -17,11 +21,10 @@ namespace AdmitOne.Persistence
         IObservable<TResult> FetchResults<TSource, TResult>(IQuery<TSource, TResult> query);
 
         IObservable<T> FetchMergedResults<TSource1, TSource2, TResult, T>(
-            Func<IQueryable<TSource1>, IQueryable<TSource2>,
-            IQueryable<TResult>> mergeStrategy, IQuery<TResult, T> query);
-        IObservable<TResult> FetchMergedResults<TSource1, TSource2, TResult>(
-            Func<IQueryable<TSource1>, IQueryable<TSource2>,
-            IQueryable<TResult>> mergeStrategy);
+            QueryableFunc<TSource1, TSource2, TResult> mergeStrategy,
+            IQuery<TResult, T> query);
+
+        IObservable<TResult> FetchMergedResults<TSource1, TSource2, TResult>(QueryableFunc<TSource1, TSource2, TResult> mergeStrategy);
 
         IObservable<bool> IsWorking { get; }
         IObservable<Exception> ThrownExceptions { get; }
@@ -45,12 +48,12 @@ namespace AdmitOne.Persistence
     public interface IQuery<in TSource, out TResult>
     {
         IEnumerable<TResult> Against(IQueryable<TSource> source);
-        IQuery<TSource, T> With<T>(Func<IQueryable<TResult>, IQueryable<T>> query);
+        IQuery<TSource, T> With<T>(QueryableFunc<TResult, T> query);
     }
 
     public interface IQuery<T> : IQuery<T, T>
     {
-        IQuery<T> With(Func<IQueryable<T>, IQueryable<T>> query);
+        IQuery<T> With(QueryableFunc<T, T> query);
     }
 
     public interface INotifyWhenComplete : IDisposable

@@ -69,12 +69,12 @@ namespace AdmitOne.Persistence
                 .SelectMany(x => x.PropertyType.GetGenericArguments());
         }
 
-        public IObservable<TResult> FetchMergedResults<TSource1, TSource2, TResult>(Func<IQueryable<TSource1>, IQueryable<TSource2>, IQueryable<TResult>> mergeStrategy)
+        public IObservable<TResult> FetchMergedResults<TSource1, TSource2, TResult>(QueryableFunc<TSource1, TSource2, TResult> mergeStrategy)
         {
             return FetchMergedResults(mergeStrategy, new Query<TResult>());
         }
 
-        public IObservable<T> FetchMergedResults<TSource1, TSource2, TResult, T>(Func<IQueryable<TSource1>, IQueryable<TSource2>, IQueryable<TResult>> mergeStrategy, IQuery<TResult, T> query)
+        public IObservable<T> FetchMergedResults<TSource1, TSource2, TResult, T>(QueryableFunc<TSource1, TSource2, TResult> mergeStrategy, IQuery<TResult, T> query)
         {
             return FetchResults(query, () => mergeStrategy(LookAt<TSource1>(), LookAt<TSource2>()));
         }
@@ -89,7 +89,7 @@ namespace AdmitOne.Persistence
             return FetchResults(query, LookAt<TSource>);
         }
 
-        private IObservable<TResult> FetchResults<TSource, TResult>(IQuery<TSource, TResult> query, Func<IQueryable<TSource>> querySource)
+        private IObservable<TResult> FetchResults<TSource, TResult>(IQuery<TSource, TResult> query, QueryableFunc<TSource> querySource)
         {
             var subj = new Subject<TResult>();
             _subjWork.OnNext(() =>

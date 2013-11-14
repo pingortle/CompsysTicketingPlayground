@@ -8,7 +8,7 @@ namespace AdmitOne.Persistence
 {
     public class Query<TSource, TResult> : IQuery<TSource, TResult>
     {
-        public Query(Func<IQueryable<TSource>, IQueryable<TResult>> applyQuery)
+        public Query(QueryableFunc<TSource, TResult> applyQuery)
         {
             ApplyQuery = applyQuery ?? (x => { throw new InvalidOperationException("Query must have a query function."); });
         }
@@ -18,23 +18,23 @@ namespace AdmitOne.Persistence
             return ApplyQuery(source).ToList();
         }
 
-        public IQuery<TSource, TOut> With<TOut>(Func<IQueryable<TResult>, IQueryable<TOut>> query)
+        public IQuery<TSource, TOut> With<TOut>(QueryableFunc<TResult, TOut> query)
         {
             return new Query<TSource, TOut>(x => query(ApplyQuery(x)));
         }
 
-        protected Func<IQueryable<TSource>, IQueryable<TResult>> ApplyQuery;
+        protected QueryableFunc<TSource, TResult> ApplyQuery;
     }
 
     public class Query<T> : Query<T, T>, IQuery<T>
     {
-        public Query(Func<IQueryable<T>, IQueryable<T>> applyQuery = null)
+        public Query(QueryableFunc<T, T> applyQuery = null)
             : base(null)
         {
             ApplyQuery = applyQuery ?? (q => q);
         }
 
-        public IQuery<T> With(Func<IQueryable<T>, IQueryable<T>> query)
+        public IQuery<T> With(QueryableFunc<T, T> query)
         {
             return new Query<T>(x => query(ApplyQuery(x)));
         }
