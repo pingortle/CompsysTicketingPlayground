@@ -122,14 +122,32 @@ namespace AdmitOne.Persistence
         public IObservable<bool> IsWorking { get; private set; }
         public IObservable<Exception> ThrownExceptions { get; private set; }
 
+        #region IDisposable
         public void Dispose()
         {
-            if (_context != null)
-                _context.Dispose();
+            Dispose(true);
 
-            _workSubscription.Dispose();
-            _isProcessing.Dispose();
+            // In case subclasses implement a finalizer...
+            GC.SuppressFinalize(this);
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    if (_context != null)
+                        _context.Dispose();
+
+                    _workSubscription.Dispose();
+                    _isProcessing.Dispose();
+                }
+            }
+        }
+
+        private bool _disposed = false;
+        #endregion
 
         private sealed class ScopeChanges : INotifyWhenComplete
         {
