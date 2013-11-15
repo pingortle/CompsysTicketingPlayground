@@ -165,6 +165,7 @@ namespace AdmitOne.Persistence
                 get { return _completion; }
             }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "_completion")]
             public void Dispose()
             {
                 if (_workQueue != null)
