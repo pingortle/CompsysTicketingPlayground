@@ -24,7 +24,8 @@ namespace AdmitOne.Persistence.Ticketing
     {
         protected override void Seed(TicketingContext context)
         {
-            foreach (var c in new Customer[] {
+            foreach (var c in new Customer[]
+            {
                 new Customer
                 {
                     Id = 1,
@@ -69,7 +70,12 @@ namespace AdmitOne.Persistence.Ticketing
                     Phone = "timcook@icloud.com",
                     Tickets = new List<Ticket>
                     {
-                        new Ticket { Id = 7, Description = "iOS 7 is hurting my eyes." },
+                        new Ticket
+                        {
+                            Id = 7,
+                            Description = "iOS 7 is hurting my eyes.",
+                            TicketNotes = new List<TicketNote> { new TicketNote { Id = 1, Note = "Too... much... pink...", Time = DateTime.Now.AddDays(-5) }, }
+                        },
                     },
                 },
             })

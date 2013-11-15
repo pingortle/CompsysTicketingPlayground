@@ -36,4 +36,12 @@ namespace AdmitOne.Domain.Entities
 
         int TicketId { get; }
     }
+
+    public interface ITicketNote : IEntity
+    {
+        string Note { get; }
+        DateTime Time { get; }
+
+        int TicketId { get; }
+    }
 }

@@ -35,6 +35,7 @@ namespace AdmitOne.Domain.Entities
         public virtual Customer Customer { get; set; }
 
         public virtual List<TicketEvent> TicketEvents { get; set; }
+        public virtual List<TicketNote> TicketNotes { get; set; }
     }
 
     public class TicketEvent : ITicketEvent
@@ -46,6 +47,17 @@ namespace AdmitOne.Domain.Entities
 
         public int EmployeeId { get; set; }
         public virtual Employee Employee { get; set; }
+
+        public int TicketId { get; set; }
+        public virtual Ticket Ticket { get; set; }
+    }
+
+    public class TicketNote : ITicketNote
+    {
+        public int Id { get; set; }
+
+        public string Note { get; set; }
+        public DateTime Time { get; set; }
 
         public int TicketId { get; set; }
         public virtual Ticket Ticket { get; set; }
