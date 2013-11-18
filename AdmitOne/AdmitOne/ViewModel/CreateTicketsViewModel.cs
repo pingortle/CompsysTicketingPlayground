@@ -31,7 +31,7 @@ namespace AdmitOne.ViewModel
             AddTicket = new ReactiveCommand(
                 this.WhenAny(
                 x => x.CurrentBatch,
-                y => y.TicketText,
+                y => y.Problem,
                 z => z.SelectedCustomer,
                 (x, y, z) => x.Value.Count() <= 100 &&
                     !string.IsNullOrWhiteSpace(y.Value) &&
@@ -39,8 +39,8 @@ namespace AdmitOne.ViewModel
 
             AddTicket.Subscribe(_ =>
                 {
-                    CurrentBatch.Add(new TicketItemViewModel(TicketText, CurrentBatch.Remove));
-                    TicketText = default(string);
+                    CurrentBatch.Add(new TicketItemViewModel(Problem, CurrentBatch.Remove));
+                    Problem = default(string);
                 });
 
             var anyInList = CurrentBatch.Changed.Select(_ => CurrentBatch.Any());
@@ -96,11 +96,11 @@ namespace AdmitOne.ViewModel
 
         public IReactiveCommand SaveChanges { get; private set; }
 
-        private string _ticketText;
-        public string TicketText
+        private string _problem;
+        public string Problem
         {
-            get { return _ticketText; }
-            set { this.RaiseAndSetIfChanged(ref _ticketText, value); }
+            get { return _problem; }
+            set { this.RaiseAndSetIfChanged(ref _problem, value); }
         }
 
         public IReactiveList<TicketItemViewModel> CurrentBatch { get; private set; }

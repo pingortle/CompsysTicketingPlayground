@@ -22,8 +22,8 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0">Ticket:</TextBlock>
-            <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding TicketText, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Grid.Row="0" Grid.Column="0">Problem:</TextBlock>
+            <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding Problem, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock Grid.Row="0" Grid.Column="1">Customer:</TextBlock>
             <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}">
                 <ComboBox.ItemTemplate>
