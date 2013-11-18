@@ -10,29 +10,37 @@
              DataContext="{Binding RelativeSource={RelativeSource Self}, Path=ViewModel}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="MinWidth" Value="200" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="4" />
+        </Style>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="4" />
+        </Style>
     </UserControl.Resources>
     <DockPanel>
-        <Grid DockPanel.Dock="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0">Problem:</TextBlock>
-            <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding Problem, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock Grid.Row="0" Grid.Column="1">Customer:</TextBlock>
-            <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Margin="2" Text="{Binding BusinessName}" />
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <StackPanel Grid.Row="2" Grid.ColumnSpan="2"  HorizontalAlignment="Center"
+        <StackPanel HorizontalAlignment="Center" DockPanel.Dock="Bottom" Grid.IsSharedSizeScope="True">
+            <local:SharedRow>
+                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                    <TextBlock>Problem:</TextBlock>
+                    <TextBox Text="{Binding Problem, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="1">
+                    <TextBlock >Customer:</TextBlock>
+                    <ComboBox ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="2" Text="{Binding BusinessName}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+            </local:SharedRow>
+            
+            <StackPanel HorizontalAlignment="Center"
                         Orientation="Horizontal"
                         local:MarginSetter.Margin="4">
                 <Button IsDefault="True" Command="{Binding AddTicket}">Add</Button>
@@ -43,7 +51,7 @@
                     </StackPanel>
                 </Button>
             </StackPanel>
-        </Grid>
+        </StackPanel>
         <Button DockPanel.Dock="Top" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="2" Command="{Binding GoBack}">Back</Button>
         <ListView ItemsSource="{Binding CurrentBatch}">
             <ListView.ItemTemplate>
