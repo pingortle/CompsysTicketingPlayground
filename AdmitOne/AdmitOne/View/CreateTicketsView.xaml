@@ -25,24 +25,22 @@
     </UserControl.Resources>
     <DockPanel>
         <StackPanel HorizontalAlignment="Center" DockPanel.Dock="Bottom" Grid.IsSharedSizeScope="True">
-            <local:SharedRow>
-                <StackPanel Orientation="Horizontal" Grid.Column="0">
-                    <TextBlock>Problem:</TextBlock>
-                    <TextBox Text="{Binding Problem, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal" Grid.Column="1">
-                    <TextBlock >Customer:</TextBlock>
-                    <ComboBox ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Margin="2" Text="{Binding BusinessName}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </StackPanel>
-            </local:SharedRow>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock >Customer:</TextBlock>
+                <ComboBox ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="2" Text="{Binding BusinessName}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
             
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Problem:</TextBlock>
+                <TextBox Text="{Binding Problem, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
             <StackPanel HorizontalAlignment="Center"
                         Orientation="Horizontal"
                         local:MarginSetter.Margin="4">
