@@ -103,6 +103,13 @@ namespace AdmitOne.ViewModel
             set { this.RaiseAndSetIfChanged(ref _problem, value); }
         }
 
+        private string _solution;
+        public string Solution
+        {
+            get { return _solution; }
+            set { this.RaiseAndSetIfChanged(ref _solution, value); }
+        }
+
         public IReactiveList<TicketItemViewModel> CurrentBatch { get; private set; }
 
         public IReactiveCommand GoBack { get; private set; }

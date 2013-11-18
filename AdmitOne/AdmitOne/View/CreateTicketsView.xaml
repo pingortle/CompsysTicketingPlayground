@@ -41,6 +41,11 @@
                 <TextBox Text="{Binding Problem, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock>Solution:</TextBlock>
+                <TextBox Text="{Binding Solution}" />
+            </StackPanel>
+
             <StackPanel HorizontalAlignment="Center"
                         Orientation="Horizontal"
                         local:MarginSetter.Margin="4">
